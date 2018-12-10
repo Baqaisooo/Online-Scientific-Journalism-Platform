@@ -1,0 +1,164 @@
+
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9" lang="en"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+  <title>{{ page_title }}</title>
+  <meta name = "format-detection" content = "telephone=no" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--meta info-->
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'scientificJournalism/images/logo_AR.png' %} ">
+  <!--stylesheet include-->
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/bootstrap.min.css'%}">
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/style.css' %}">
+  <!-- RTL Styles -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href=" {% static 'scientificJournalism/css/font-awesome.min.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/responsive.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/owl.carousel.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/animate.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/flexslider.css' %} ">
+  <!--modernizr-->
+  <script src=" {% static 'scientificJournalism/js/jquery.modernizr.js' %} "></script>
+  
+  <!--Our Customization-->
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/osjp_header.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/osjp_writer.css' %} ">
+
+  
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/rtl.css' %}">
+  
+  {% block extraheader %}
+    
+  {% endblock extraheader %}
+    
+<style>
+  .center{
+    text-align: center;
+    font-size: larger;
+    font-weight: bold
+  }
+</style>
+
+</head>
+<body class="wide_layout" style="direction:{{ dir }}">
+   
+  <div class="loader"></div>
+  <!--[if (lt IE 9) | IE 9]>
+    <div class="ie_message_block">
+      <div class="container">
+        <div class="wrapper">
+          <div class="clearfix"><i class="fa fa-exclamation-triangle f_left"></i><b>Attention!</b> This page may   not display correctly. You are using an outdated version of Internet Explorer. For a faster, safer browsing experience.<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode" class="button button_type_3 button_grey_light f_right" target="_blank">Update Now!</a></div>
+        </div>
+      </div>
+    </div>
+  <![endif]-->
+
+  <!--cookie-->
+  <!-- <div class="cookie">
+          <div class="container">
+            <div class="clearfix">
+              <span>Please note this website requires cookies in order to function correctly, they do not store any specific information about you personally.</span>
+              <div class="f_right"><a href="#" class="button button_type_3 button_orange">Accept Cookies</a><a href="#" class="button button_type_3 button_grey_light">Read More</a></div>
+            </div>
+          </div>
+        </div>-->
+
+    
+
+  <div class="wrapper_container">
+
+    <!--==============================header=================================-->
+
+    <header role="banner" class="header header_4">
+      <div class="h_bot_part">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="clearfix display_flex">
+                <a href="{% url 'mainpage' %}" class="f_left logo"><img src="{% static 'scientificJournalism/images/logo_AR.png' %} " alt="" height="100" width="170"></a>
+                <div class="top_header_menu">
+                    <a href="{% url 'mainpage' %}" class="button button_type_4 button_dark_blue">الصفحة الرئيسية</a>
+                </div>
+                
+                <div class="f_right display_flex margin_header_content">
+                  
+                      <!--INFO-->
+                      <div class="login_button margin_auto">
+                        <a href="#"><h3 style="color:white">{{ request.session.email }}</h3></a>
+                        <div class="popup dropdown_image">
+                            <ul>
+                              <li>
+                                <a href="#" ><i class="far fa-user"></i>ملف التعريف </a>
+                              </li>
+                              <li>
+                                <a href=" {% url 'logout' %} "><i class="fas fa-sign-out-alt"></i> تسجيل الخروج </a>
+                              </li>
+                            </ul>
+                          
+                        </div>
+                      </div>
+                      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+          
+    </header>
+
+      
+
+    <!--==============================Main Content=================================-->
+ 
+    {% block body %}
+    {% endblock body %}
+
+
+
+    <!--==============================footer=================================-->
+     
+    
+  </div>
+
+
+
+  <!--scripts include-->
+  <script src=" {% static 'scientificJournalism/js/jquery-2.1.0.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery-ui.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.queryloader2.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jflickrfeed.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/owl.carousel.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/retina.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/apear.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/circles.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.tweet.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.themepunch.tools.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.themepunch.revolution.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/plugins.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/script.js' %} "></script>
+
+  <script src=" {% static 'scientificJournalism/js/jquery.flexslider-min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/alert_timer.js' %} "></script>
+
+  
+  {% block script %}
+  {% endblock script %}
+  
+
+</body>
+</html>

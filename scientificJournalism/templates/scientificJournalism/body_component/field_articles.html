@@ -1,0 +1,272 @@
+
+{% extends extend_page %}
+
+{% load tz %}
+
+{% block body %}
+  
+
+  
+    <!--==============================content================================-->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          
+          <div class="col-lg-8 col-md-8 col-sm-12">
+           
+            <div class="section">
+              <h2 class="section_title section_title_big">{{ search_in_field }}</h2>
+              <form class="search">
+                <input type="text" name="" placeholder="{{ search }}" id="key_word">
+                <button class="" disabled><i class="fa fa-search"></i></button>
+              </form>
+            </div>
+
+            <ul class="vertical_list type2" id="listed_articles">
+              {% if articles %}
+                {% for article in articles %}
+                  <li class="clearfix">
+                    <div class="scale_image_container">
+                      <a href="{% url 'show_article' article.article.article_ID %}"><img src="{{ article.article.cover_image.url }}" alt="" class="scale_image" width="555" height="200"></a>
+                      <div class="post_image_buttons">
+                        <a href="{% url 'show_article' article.article.article_ID %}" class="button banner_button fashion">
+                          {% if request.session.lang == 'ar' %}
+                            {{ article.article.get_field_ar_display }}
+                          {% else %}
+                            {{ article.article.get_field_en_display }}
+                          {% endif %}
+                        </a>
+                        <a href="{% url 'show_article' article.article.article_ID %}" class="icon_box">
+                          {% if article.article.type == 'VIDEO' %}
+                            <i class="fa fa-video-camera"></i>
+                          {% else %}
+                            {% if article.article.type == 'AUDIO' %}
+                            <i class="fa fa-headphones fa-lg"></i>
+                            {% else %}
+                              {% if article.article.type == 'IMAGE' %}
+                                <i class="fa fa-picture-o"></i>
+                              {% else %}
+                                <i class="fa fa-file-text"></i>
+                              {% endif %}
+                            {% endif %}
+                          {% endif %}
+                        </a>
+                      </div>
+                      {% if article.article.price and request.session.role != 'subscriber'  %}
+                        
+                        {% if article.article.field_ar != request.session.field %}
+                            <div class="canvas bg_canvas_1">
+                            <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                            </div>
+                        {% endif %}
+                          
+                      {% endif %}
+                    </div>
+                    <div class="wrapper">
+                      <div class="clearfix">
+                        <div class="f_left">
+                          <div class="event_date" style="color:gray">{{ article.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                        </div>
+                        <div class="f_right event_info">
+                            <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                            <span>{{ article.comment }} </span>
+                            <span style="padding:0 4px">|</span>
+                            <i class="fa fa fa-star-o d_inline_m m_right_3"></i> 
+                            <span>
+                                {% if not article.rate.subscriber_rating__avg %}
+                                    0
+                                {% else %}
+                                    {{ article.rate.subscriber_rating__avg }}
+                                {% endif %}
+                            </span>
+                            <span style="padding:0 4px">|</span>
+                            <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                            <span>{{ article.article.number_of_views }}</span>
+                        </div>
+                      </div>
+                      <div class="post_text">
+                        <h4 class="post_title"><a href="{% url 'show_article' article.article.article_ID %}">
+                          {% if request.session.lang == 'ar' %}
+                            {{ article.article.title_ar }}
+                          {% else %}
+                            {{ article.article.title_en }}
+                          {% endif %}
+                        </a></h4>
+                        <p>
+                          {% if request.session.lang == 'ar' %}
+                            {{ article.article.brief_of_article_ar }}
+                          {% else %}
+                            {{ article.article.brief_of_article_en }}
+                          {% endif %}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              {% else %}
+                  <h2 class="center">{{ no_articles }}</h2>
+              {% endif %}
+              
+                
+              
+              
+            </ul>
+
+          </div>
+
+
+
+          <div class="col-lg-4 col-md-4 col-sm-12">
+                
+            <div class="section side_bar_reviews appear-animation fadeInDown appear-animation-visible"
+                data-appear-animation="fadeInDown" data-appear-animation-delay="1150" style="animation-delay: 1150ms;">
+                <h2 class="section_title">{{ latest_articles_header }}</h2>
+                <ul>
+                    
+                    {% for article in latest_articles %}
+                        <li class="clearfix">
+                            <div class="scale_image_container">
+                                <a href="{% url 'show_article' article.article_ID %}"><img src=" {{ article.cover_image.url }} " alt="" width="165" height="110"></a>
+                                <div class="post_image_buttons">
+                                    <a href="{% url 'show_article' article.article_ID %}" class="button banner_button travel" >
+                                        {% if request.session.lang == 'ar' %}
+                                            {{ article.get_field_ar_display }}
+                                        {% else %}
+                                            {{ article.get_field_en_display }}
+                                        {% endif %}
+                                    </a>
+                                    <a href="{% url 'show_article' article.article_ID %}" class="icon_box">
+                                        {% if package.article.type == 'VIDEO' %}
+                                            <i class="fa fa-video-camera"></i>
+                                        {% else %}
+                                            {% if package.article.type == 'AUDIO' %}
+                                                <i class="fa fa-headphones fa-lg"></i>
+                                            {% else %}
+                                                {% if package.article.type == 'IMAGE' %}
+                                                    <i class="fa fa-picture-o"></i>
+                                                {% else %}
+                                                    <i class="fa fa-file-text"></i>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                {% if article.price and request.session.role != 'subscriber'  %}
+                                  <div class="canvas bg_canvas_1">
+                                    <i class="fa fa-lock lock_customization_small color_lock_customization_2"></i>
+                                  </div>
+                                {% endif %}
+                            </div>
+                            <div class="post_text">
+                                <a href="{% url 'show_article' article.article_ID %}">
+                                    <h4>
+                                        {% if request.session.lang == 'ar' %}
+                                            {{ article.title_ar }}
+                                        {% else %}
+                                            {{ article.title_en }}
+                                        {% endif %}
+                                    </h4>
+                                </a>
+                                <div class="event_date" style="color:black">{{ article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                        
+                        
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2 class="section_title">{{ our_writers_header }}</h2>
+                <ul class="writers_list clearfix">
+                    
+                    {% for writer in our_writers %}
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <img src="{{ writer.picture.url }} " alt="" width="100" height="100">
+                                </div>
+                                <div class="post_text">
+                                    <h4>{{ writer.writer_ID.first_name|add:' '|add:writer.writer_ID.last_name }}</h4>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                            
+                        
+                </ul>
+            </div>
+
+            {% if related_articles %}
+                <div class="section side_bar_banners clearfix">
+                    <h2 class="section_title">{{ related_articles_header }}</h2>
+                    
+                    
+                    {% for article in related_articles %}
+                        <div class="scale_image_container">
+                            <a href="{% url 'show_article' article.article_ID %}">
+                                <img src=" {{ article.cover_image.url }} " alt="" width="555" height="340">
+                            </a>
+                            <div class="caption_type_1">
+                                <div class="caption_inner">
+                                    <div class="clearfix">
+                                        <a href="{% url 'show_article' article.article_ID %}" class="button banner_button travel">
+                                            {% if request.session.lang == 'ar' %}
+                                                {{ article.get_field_ar_display }}
+                                            {% else %}
+                                                {{ article.get_field_en_display }}
+                                            {% endif %}</a>
+                                        <div class="event_date">
+                                            {{ article.publishing_date|timezone:'Asia/Riyadh' }}
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'show_article' article.article_ID %}">
+                                        <h3>
+                                            {% if request.session.lang == 'ar' %}
+                                                {{ article.title_ar }}
+                                            {% else %}
+                                                {{ article.title_en }}
+                                            {% endif %}
+                                        </h3>
+                                    </a>
+                                    {% if article.price and request.session.role != 'subscriber'  %}
+                                    <div class="canvas bg_canvas_1">
+                                        <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                        
+                        
+                </div>
+            
+            {% endif %}
+                
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+{% endblock body %}
+
+
+
+{% block script %}
+    <script>
+      $(document).ready(function(){
+        $("#{{field}}").css('background-color','#ff680d')
+      })
+    </script>
+
+    <script>
+        $("#key_word").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#listed_articles li").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+    </script>
+{% endblock script %}

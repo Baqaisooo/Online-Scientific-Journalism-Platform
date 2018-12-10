@@ -1,0 +1,136 @@
+
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% block extrahead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+{% endblock %}
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">
+
+    <style>
+        .dashboard #content {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+
+
+{% block content %}
+<div id="content-main">
+    <div class="chart-container">
+        <h2>Number of Articles in Each Field</h2>
+        <canvas id="myChart1" width="400" height="150" aria-label="Hello ARIA World" role="img"></canvas>
+        <br><br>
+        <hr>
+        <br><br>
+        <h2>Number of Articles In Each Status</h2>
+        <canvas id="myChart2" width="400" height="150" aria-label="Hello ARIA World" role="img"></canvas>
+    </div>
+            
+    
+    <script>
+        var ctx = document.getElementById("myChart1");
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["HEALTH", "IT", "ECOLOGY", "ORGANISMS", "NATURE", "CHEMICAL", "MATH", "ENGINEERING"],
+                datasets: [{
+                    label: 'Number of Articles in Each Field',
+                    data: {{ num_articles_in_each_field }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgb(0, 96, 100, 0.2)',
+                        'rgb(186, 33, 33, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgb(0, 96, 100, 1)',
+                        'rgb(186, 33, 33, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+    
+    <script>
+        var ctx = document.getElementById("myChart2");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['REJECTED','ONLINE','EDITORIAL','ARCHIVED','SUBMITTED','ASSIGNED','REVIEWED','FINAL_REVIEWED','WITH_REVIEWER','APOLOGIZED'],
+                datasets: [{
+                    label: 'Number of Articles In Each Status',
+                    data: {{ num_articles_in_status }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgb(0, 96, 100, 0.2)',
+                        'rgb(186, 33, 33, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgb(0, 96, 100, 1)',
+                        'rgb(186, 33, 33, 1)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+        
+    
+
+
+        
+
+</div>
+{% endblock %}

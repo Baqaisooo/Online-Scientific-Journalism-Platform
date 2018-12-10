@@ -1,0 +1,158 @@
+
+{% extends 'scientificJournalism/base_component/writer.html' %}
+
+{% load static %}
+
+{% block body %}
+
+{% load tz %}
+
+    <!--==============================Alert Messages=================================-->
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <div class="container-fluid" id='alert' data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+            <br/>
+            <div class="alert center {{ message.tags }}">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{ message }}
+            </div>
+          </div>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    
+
+    <!--====================my article=======================-->
+
+    <div class="container">
+        <div class="section_5">
+            <table class="table_type_1 var2">
+                <tbody style="text-align-last:center">
+                    <tr class="f_size_large">
+                        <th style="width:5%">#</th>
+                        <th colspan="2">{{ article }}</th>
+                        <th style="width:15%">{{ field }}</th>
+                        <th style="width:15%">{{ status }}</th>
+                    </tr>
+
+                    {% for article in my_articles %}
+                        <tr style="vertical-align: middle;">
+                            <td>
+                                <h3>{{ article.index }}</h3>
+                            </td>
+                            <td style="width:240px">
+                                <img src="{{ article.cover_image.url }}"  alt="{{ article.title_ar }}" style=" height: 130px; width: 200px; ">
+                            </td>
+                            
+                            <td style="text-align-last:auto">
+                                <div style="text-align:justify">
+                                    <a href="#"><h3>
+                                        
+                                        {% if request.session.lang == 'ar' %}
+                                            {{ article.title_ar }}
+                                        {% else %}
+                                            {{ article.title_en }}
+                                        {% endif %}
+                                            
+                                        
+                                    </h3></a>
+                                    <p style="margin:5px">{{ submited_on }}<span>{{ article.submit_date|timezone:'Asia/Riyadh' }}</span></p>    
+                                    <p style="color:black">
+                                        {% if request.session.lang == 'ar' %}
+                                            {{ article.brief_of_article_ar }}
+                                        {% else %}
+                                            {{ article.brief_of_article_en }}
+                                        {% endif %}
+                                    </p>
+                                    
+                                        
+                                </div>
+                            </td>
+                            <td>
+                                <div><h4>
+                                    {% if request.session.lang == 'ar' %}
+                                        {{ article.get_field_ar_display }}
+                                    {% else %}
+                                        {{ article.get_field_en_display }}
+                                    {% endif %}
+                                </h4></div>
+                            </td>
+                            <td>
+                                <div class="clearfix">
+                                    <div><h4> 
+                                        
+                                        {% if article.article_status_ar == 'SUBMITTED' %}
+                                            {{ waiting }}
+                                        {% elif article.article_status_ar in "ASSIGNED, REVIEWED, FINAL_REVIEWED, WITH_REVIEWER, APOLOGIZED" %}
+                                            {{ reviewing }}
+                                        {% else %}
+                                            
+                                            {% if request.session.lang == 'ar' %}
+                                                {{ article.get_article_status_ar_display }}
+                                            {% else %}
+                                                {{ article.get_article_status_en_display }}
+                                            {% endif %}
+                                                
+                                        {% endif %}
+                                                
+                                        </h4></div>
+                                    
+                                    {% if article.article_status_ar == 'REJECTED' %}
+                                        <button class="rejection button button_type_2" 
+                                                style="color: #fff;
+                                                background-color: #d9534f;
+                                                margin: 5px 0"
+                                                onMouseOver="this.style.background='#c9302c'"   onMouseOut="this.style.background='#d9534f'"
+                                                value="{{article.article_ID}}">{{ why_rejected }}</button>
+                                    {% endif %}
+                                        
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% if article.article_status_ar == 'REJECTED' %}
+                            <tr>
+                                <td colspan="5" style="background-color:#1384e4e0; color:white; display:none" id="{{article.article_ID}}">
+                                    <h2 style="color:white">{{ why_article_rejected }}</h2>
+                                    <p style="color:white">{{ article.feedback }}</p>
+                                    
+                                </td>
+                            </tr>
+                        {% endif %}   
+                        
+                        
+
+
+
+
+                    
+                        
+                            
+
+                        
+                          
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+<br/>
+<br/>
+{% endblock body %}
+
+
+
+  
+{% block script %}
+    <script>
+        $(".rejection").click(function(){
+            var id = $(this).attr('value');
+            $("#"+id).toggle()
+        })
+    </script>
+{% endblock script %}
+
+

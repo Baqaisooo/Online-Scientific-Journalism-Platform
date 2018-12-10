@@ -1,0 +1,877 @@
+
+{% extends extends %}
+
+
+{% load static %}
+
+{% load tz %}
+
+{% block body %}
+
+    <!--==============================Alert Messages=================================-->
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <div class="container-fluid" id='alert' data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+            <br/>
+            <div class="alert center {{ message.tags }}">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{ message }}
+            </div>
+          </div>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    
+
+    <!--==============================Editorial=================================-->
+
+    <div class="content editorial_margin">
+      <div class="container-fluid">
+        <div class="wrapper flex_reversed" data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+          <div class="flex_container">
+            <div id="flexslider">
+              <ul class="slides">
+
+                {% for article in editorial_articles %}
+                  <li>
+                    <div class="scale_image_container">
+                      <a href="{% url 'show_article' article.article_ID %}"><img src=" {{ article.cover_image.url }} " alt="" class="scale_image editorial_Image"></a>
+                      <!--caption-->
+                      <div class="caption_type_1">
+                        <div class="caption_inner">
+                          <div class="clearfix">
+                            <a href="{% url 'get_field_articles' article.field_ar %}" role="button" class="button banner_button sport">
+                              {% if request.session.lang == 'ar' %}
+                                {{ article.get_field_ar_display }}
+                              {% else %}
+                                {{ article.get_field_en_display }}
+                              {% endif %}
+                            </a>
+                            <div class="event_date">{{ article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                          </div>
+                          <a href="{% url 'show_article' article.article_ID %}"><h1 class="text-white">
+                            {% if request.session.lang == 'ar' %}
+                              {{ article.title_ar }}
+                            {% else %}
+                              {{ article.title_en }}
+                            {% endif %}
+                          </h1></a>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+ 
+              </ul>
+            </div>
+          </div>
+          <div class="thumbnails_container">
+            <ul>
+              
+              {% for article in editorial_articles %}
+  
+                <li class="clearfix">
+                  <div class="scale_image_container">
+                    <img src=" {{ article.cover_image.url }} " alt="" class="scale_image"  width="155" height="100">
+                    <div class="post_image_buttons">
+                      <a href="{% url 'get_field_articles' article.field_ar %}" class="button banner_button sport">
+                        {% if request.session.lang == 'ar' %}
+                          {{ article.get_field_ar_display }}
+                        {% else %}
+                          {{ article.get_field_en_display }}
+                        {% endif %}
+                      </a>
+                      <a href="{% url 'show_article' article.article_ID %}" class="icon_box">
+                        <i class="fa fa-file-text"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="post_text">
+                    <h4><a href="{% url 'show_article' article.article_ID %}">
+                      {% if request.session.lang == 'ar' %}
+                        {{ article.title_ar }}
+                      {% else %}
+                        {{ article.title_en }}
+                      {% endif %}
+                    </a></h4>
+                    <div class="event_date">{{ article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--==============================Leatest Artice=================================-->
+
+    <div class="container-fluid">
+      <div class="section appear-animation fadeInDown appear-animation-visible" data-appear-animation="fadeInDown" data-appear-animation-delay="1150" style="animation-delay: 1150ms;">
+        <div class="tabs variation_2 tabs variation_3 ui-tabs ui-widget ui-widget-content ui-corner-all">
+          <!--tabs navigation-->
+          <div class="clearfix">
+            <h2 class="section_title">{{ latest_article }}</h2>
+            <div class="clearfix tabs_conrainer">
+              <ul class="tabs_nav clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                
+                    {% if not first_latest_articles %}
+                      <h2 class="center">{{ no_articles }}</h2>
+                    {% else %}
+                      <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tab-1" aria-labelledby="ui-id-1" aria-selected="true"><a href="#tab-1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">1</a></li>
+                    {% endif %}
+                      
+                    {% for container in latest_articles %}
+                      <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tab-{{ container.index }}" aria-labelledby="ui-id-{{ container.index }}" aria-selected="false"><a href="#tab-{{ container.index }}" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-{{ container.index }}">{{ container.index }}</a></li>
+                    {% endfor %}
+                
+              </ul>
+            </div>
+          </div>
+          <!--tabs content-->
+          <div class="tabs_content">
+            <div id="tab-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+              <div class="row">
+                
+                {% for package in first_latest_articles.packages %}
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="float:right">
+                    <div class="section_post_left">
+                      <div class="scale_image_container">
+                        <a href="{% url 'show_article' package.article.article_ID %}"><img src="{{ package.article.cover_image.url }} " alt="" class="scale_image" width="555" height="209"></a>
+                        <div class="post_image_buttons">
+                          <a href="{% url 'get_field_articles' package.article.field_ar %}" class="button banner_button food">
+                            {% if request.session.lang == 'ar' %}
+                              {{ package.article.get_field_ar_display }}
+                            {% else %}
+                              {{ package.article.get_field_en_display }}
+                            {% endif %}
+                          </a>
+                          <a href="{% url 'show_article' package.article.article_ID %}" class="icon_box">
+                            {% if package.article.type == 'VIDEO' %}
+                              <i class="fa fa-video-camera"></i>
+                            {% else %}
+                              {% if package.article.type == 'AUDIO' %}
+                              <i class="fa fa-headphones fa-lg"></i>
+                              {% else %}
+                                {% if package.article.type == 'IMAGE' %}
+                                  <i class="fa fa-picture-o"></i>
+                                {% else %}
+                                  <i class="fa fa-file-text"></i>
+                                {% endif %}
+                              {% endif %}
+                            {% endif %}
+                            
+                          </a>
+                        </div>
+                        
+                        
+                        {% if package.article.field_ar != request.session.field %}   
+                          {% if package.article.price and request.session.role != 'subscriber'%}
+                            <div class="canvas bg_canvas_1">
+                              <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                          
+                      </div>
+                      <div class="clearfix">
+                        <div class="f_left">
+                          <div class="event_date" style="color:gray">{{ package.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                        </div>
+                        <div class="f_right event_info">
+                          
+                            <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                            <span>{{ package.comments }}</span>
+
+                            <span style="padding:0 4px">|</span>
+
+                            <i class="fa fa fa-star d_inline_m m_right_3"></i> 
+                            <span>
+                              
+                              {% if package.rates.subscriber_rating__avg %}
+                                {{ package.rates.subscriber_rating__avg }}
+                              {% else %}
+                                0
+                              {% endif %}
+                                
+                            </span>
+
+                            <span style="padding:0 4px">|</span>
+
+                            <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                            <span>{{ package.article.number_of_views }}</span>
+                          
+                        </div>
+                      </div>
+                      <div class="post_text">
+                        
+                        <h2 class="post_title"><a href="{% url 'show_article' package.article.article_ID %}">
+                          {% if request.session.lang == 'ar' %}
+                            {{ package.article.title_ar }}
+                          {% else %}
+                            {{ package.article.title_en }}
+                          {% endif %}
+
+                        </a></h2>
+
+                        <p>
+                          {% if request.session.lang == 'ar' %}
+                            {{ package.article.brief_of_article_ar }}
+                          {% else %}
+                            {{ package.article.brief_of_article_en }}
+                          {% endif %}
+
+                          <span style="font-size: 17px; font-weight: bold;"><a href="{% url 'show_article' package.article.article_ID %}">{{ read_more }}</a></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+                  
+                
+
+              </div>
+            </div>
+            
+            
+            {% for container in latest_articles %}
+              <div id="tab-{{ container.index }}" aria-labelledby="ui-id-{{ container.index }}" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="false" aria-hidden="true" style="display: none;">
+                <div class="row">
+                
+                  {% for package in container.packages %}
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="float:right">
+                      <div class="section_post_left">
+                        <div class="scale_image_container">
+                          <a href="{% url 'show_article' package.article.article_ID %}"><img src="{{ package.article.cover_image.url }} " alt="" class="scale_image" width="555" height="209"></a>
+                          <div class="post_image_buttons">
+                            <a href="{% url 'get_field_articles' package.article.field_ar %}" class="button banner_button food">
+                              {% if request.session.lang == 'ar' %}
+                                {{ package.article.get_field_ar_display }}
+                              {% else %}
+                                {{ package.article.get_field_en_display }}
+                              {% endif %}
+                            </a>
+                            <a href="{% url 'show_article' package.article.article_ID %}" class="icon_box">
+                              {% if package.article.type == 'VIDEO' %}
+                                <i class="fa fa-video-camera"></i>
+                              {% else %}
+                                {% if package.article.type == 'AUDIO' %}
+                                <i class="fa fa-headphones fa-lg"></i>
+                                {% else %}
+                                  {% if package.article.type == 'IMAGE' %}
+                                    <i class="fa fa-picture-o"></i>
+                                  {% else %}
+                                    <i class="fa fa-file-text"></i>
+                                  {% endif %}
+                                {% endif %}
+                              {% endif %}
+                              
+                            </a>
+                          </div>
+                          
+                          {% if package.article.field_ar != request.session.field %}   
+                            {% if package.article.price and request.session.role != 'subscriber'%}
+                              <div class="canvas bg_canvas_1">
+                                <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                            
+                          
+                        </div>
+                        <div class="clearfix">
+                          <div class="f_left">
+                            <div class="event_date" style="color:gray">{{ package.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                          </div>
+                          <div class="f_right event_info">
+                            
+                              <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                              <span>{{ package.comments }}</span>
+                           
+                              <span style="padding:0 4px">|</span>
+
+                              <i class="fa fa fa-star d_inline_m m_right_3"></i> 
+                              <span>
+                                
+                                {% if package.rates.subscriber_rating__avg %}
+                                  {{ package.rates.subscriber_rating__avg }}
+                                {% else %}
+                                  0
+                                {% endif %}
+                                  
+                              </span>
+                            
+                              <span style="padding:0 4px">|</span>
+                              
+                              <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                              <span>{{ package.article.number_of_views }}</span>
+                            
+                          </div>
+                        </div>
+                        <div class="post_text">
+                          
+                          <h2 class="post_title"><a href="{% url 'show_article' package.article.article_ID %}">
+                            {% if request.session.lang == 'ar' %}
+                              {{ package.article.title_ar }}
+                            {% else %}
+                              {{ package.article.title_en }}
+                            {% endif %}
+  
+                          </a></h2>
+  
+                          <p>
+                            {% if request.session.lang == 'ar' %}
+                              {{ package.article.brief_of_article_ar }}
+                            {% else %}
+                              {{ package.article.brief_of_article_en }}
+                            {% endif %}
+  
+                            <span style="font-size: 17px; font-weight: bold;"><a href="{% url 'show_article' package.article.article_ID %}">{{ read_more }}</a></span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                    
+                  
+  
+                </div>
+              </div>
+            {% endfor %}
+              
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--==============================Most Views Artice=================================-->
+
+    <div class="container-fluid">
+      <div class="section appear-animation fadeInDown appear-animation-visible" data-appear-animation="fadeInDown" data-appear-animation-delay="1150" style="animation-delay: 1150ms;">
+        <div class="tabs variation_2 tabs variation_3 ui-tabs ui-widget ui-widget-content ui-corner-all">
+          <!--tabs navigation-->
+          <div class="clearfix">
+            <h2 class="section_title">{{ most_read }}</h2>
+            <div class="clearfix tabs_conrainer">
+              <ul class="tabs_nav clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                
+                    {% if not first_highest_views_artilces %}
+                      <h2 class="center">{{ no_articles }}</h2>
+                    {% else %}
+                      <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tab-1" aria-labelledby="ui-id-1" aria-selected="true"><a href="#tab-1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">1</a></li>
+                    {% endif %}
+                      
+                    {% for container in highest_views_artilces %}
+                      <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tab-{{ container.index }}" aria-labelledby="ui-id-{{ container.index }}" aria-selected="false"><a href="#tab-{{ container.index }}" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-{{ container.index }}">{{ container.index }}</a></li>
+                    {% endfor %}
+                
+              </ul>
+            </div>
+          </div>
+          <!--tabs content-->
+          <div class="tabs_content">
+            <div id="tab-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+              <div class="row">
+                
+                {% for package in first_highest_views_artilces.packages %}
+                  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="float:right">
+                    <div class="section_post_left">
+                      <div class="scale_image_container">
+                        <a href="{% url 'show_article' package.article.article_ID %}"><img src="{{ package.article.cover_image.url }} " alt="" class="scale_image" width="555" height="209"></a>
+                        <div class="post_image_buttons">
+                          <a href="{% url 'get_field_articles' package.article.field_ar %}" class="button banner_button food">
+                            {% if request.session.lang == 'ar' %}
+                              {{ package.article.get_field_ar_display }}
+                            {% else %}
+                              {{ package.article.get_field_en_display }}
+                            {% endif %}
+                          </a>
+                          <a href="{% url 'show_article' package.article.article_ID %}" class="icon_box">
+                            {% if package.article.type == 'VIDEO' %}
+                              <i class="fa fa-video-camera"></i>
+                            {% else %}
+                              {% if package.article.type == 'AUDIO' %}
+                              <i class="fa fa-headphones fa-lg"></i>
+                              {% else %}
+                                {% if package.article.type == 'IMAGE' %}
+                                  <i class="fa fa-picture-o"></i>
+                                {% else %}
+                                  <i class="fa fa-file-text"></i>
+                                {% endif %}
+                              {% endif %}
+                            {% endif %}
+                            
+                          </a>
+                        </div>
+                        
+                        {% if package.article.field_ar != request.session.field %}   
+                          {% if package.article.price and request.session.role != 'subscriber'%}
+                            <div class="canvas bg_canvas_1">
+                              <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                          
+                      </div>
+                      <div class="clearfix">
+                        <div class="f_left">
+                          <div class="event_date" style="color:gray">{{ package.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                        </div>
+                        <div class="f_right event_info">
+                          
+                            <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                            <span>{{ package.comments }}</span>
+
+                            <span style="padding:0 4px">|</span>
+
+                            <i class="fa fa fa-star d_inline_m m_right_3"></i> 
+                            <span>
+                              
+                              {% if package.rates.subscriber_rating__avg %}
+                                {{ package.rates.subscriber_rating__avg }}
+                              {% else %}
+                                0
+                              {% endif %}
+                                
+                            </span>
+
+                            <span style="padding:0 4px">|</span>
+
+                            <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                            <span>{{ package.article.number_of_views }}</span>
+                          
+                        </div>
+                      </div>
+                      <div class="post_text">
+                        
+                        <h2 class="post_title"><a href="{% url 'show_article' package.article.article_ID %}">
+                          {% if request.session.lang == 'ar' %}
+                            {{ package.article.title_ar }}
+                          {% else %}
+                            {{ package.article.title_en }}
+                          {% endif %}
+
+                        </a></h2>
+
+                        <p>
+                          {% if request.session.lang == 'ar' %}
+                            {{ package.article.brief_of_article_ar }}
+                          {% else %}
+                            {{ package.article.brief_of_article_en }}
+                          {% endif %}
+
+                          <span style="font-size: 17px; font-weight: bold;"><a href="{% url 'show_article' package.article.article_ID %}">{{ read_more }}</a></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+                  
+                
+
+              </div>
+            </div>
+            
+            
+            {% for container in highest_views_artilces %}
+              <div id="tab-{{ container.index }}" aria-labelledby="ui-id-{{ container.index }}" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="false" aria-hidden="true" style="display: none;">
+                <div class="row">
+                
+                  {% for package in container.packages %}
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4" style="float:right">
+                      <div class="section_post_left">
+                        <div class="scale_image_container">
+                          <a href="{% url 'show_article' package.article.article_ID %}"><img src="{{ package.article.cover_image.url }} " alt="" class="scale_image" width="555" height="209"></a>
+                          <div class="post_image_buttons">
+                            <a href="{% url 'get_field_articles' package.article.field_ar %}" class="button banner_button food">
+                              {% if request.session.lang == 'ar' %}
+                                {{ package.article.get_field_ar_display }}
+                              {% else %}
+                                {{ package.article.get_field_en_display }}
+                              {% endif %}
+                            </a>
+                            <a href="{% url 'show_article' package.article.article_ID %}" class="icon_box">
+                              {% if package.article.type == 'VIDEO' %}
+                                <i class="fa fa-video-camera"></i>
+                              {% else %}
+                                {% if package.article.type == 'AUDIO' %}
+                                <i class="fa fa-headphones fa-lg"></i>
+                                {% else %}
+                                  {% if package.article.type == 'IMAGE' %}
+                                    <i class="fa fa-picture-o"></i>
+                                  {% else %}
+                                    <i class="fa fa-file-text"></i>
+                                  {% endif %}
+                                {% endif %}
+                              {% endif %}
+                              
+                            </a>
+                          </div>
+                          
+                          {% if package.article.field_ar != request.session.field %}   
+                            {% if package.article.price and request.session.role != 'subscriber'%}
+                              <div class="canvas bg_canvas_1">
+                                <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                            
+                          
+                        </div>
+                        <div class="clearfix">
+                          <div class="f_left">
+                            <div class="event_date" style="color:gray">{{ package.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                          </div>
+                          <div class="f_right event_info">
+                            
+                              <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                              <span>{{ package.comments }}</span>
+                           
+                              <span style="padding:0 4px">|</span>
+
+                              <i class="fa fa fa-star d_inline_m m_right_3"></i> 
+                              <span>
+                                
+                                {% if package.rates.subscriber_rating__avg %}
+                                  {{ package.rates.subscriber_rating__avg }}
+                                {% else %}
+                                  0
+                                {% endif %}
+                                  
+                              </span>
+                            
+                              <span style="padding:0 4px">|</span>
+                              
+                              <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                              <span>{{ package.article.number_of_views }}</span>
+                            
+                          </div>
+                        </div>
+                        <div class="post_text">
+                          
+                          <h2 class="post_title"><a href="{% url 'show_article' package.article.article_ID %}">
+                            {% if request.session.lang == 'ar' %}
+                              {{ package.article.title_ar }}
+                            {% else %}
+                              {{ package.article.title_en }}
+                            {% endif %}
+  
+                          </a></h2>
+  
+                          <p>
+                            {% if request.session.lang == 'ar' %}
+                              {{ package.article.brief_of_article_ar }}
+                            {% else %}
+                              {{ package.article.brief_of_article_en }}
+                            {% endif %}
+  
+                            <span style="font-size: 17px; font-weight: bold;"><a href="{% url 'show_article' package.article.article_ID %}">{{ read_more }}</a></span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                    
+                  
+  
+                </div>
+              </div>
+            {% endfor %}
+              
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--==============================Most Rating Artice=================================-->
+
+    <div class="container-fluid">
+      <div class="section columns" data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+      
+        <div class="row div-margin flex_reversed">
+          <div class="col-lg-3 col-md-3 col-sm-3 bg-beige">
+            <h2 class="archive-header">{{ quick_search_in_archive }}</h2>
+            <img src="{% static 'scientificJournalism/images/120x80_post_img3.jpg' %} " alt="Archive" height="100" class="full-width archive-input-field" />
+            <form>
+              <ul>
+                <li class="flex archive-input-field">
+                  <input type="text" name="" placeholder="{{ search }}">
+                  <button class="search-icon-padding"><i class="fa fa-search"></i></button>
+                </li>
+                <li class="archive-input-field">
+                  <div class="custom_select">
+                    <div class="select_title">{{ choose_search_field }}</div>
+                      <ul id="menu_type" class="select_list" style="display: none;"><li>الصحة</li><li>هندسيات</li><li>الطبيعة و الكون</li><li>رياضيات</li><li>البيئة</li></ul>
+                      <select class="d_none" style="display: none;">
+                        <option value="menu">الصحة</option>
+                        <option value="menu">هندسيات</option>
+                        <option value="menu">الطبيعة و الكون</option>
+                        <option value="menu">رياضيات</option>
+                        <option value="menu">البيئة</option>
+                      </select>
+                    </div>
+                </li>
+                <li class="archive-input-field">
+                  <div class="flex">
+                    <label for="date" class="date-label">{{ search_from }}</label><br>
+                    <input class="form-control date-field" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
+                  </div>
+                  <div class="flex">
+                    <label for="date" class="date-label">{{ search_to }}</label><br>
+                    <input class="form-control date-field" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
+                  </div>
+                </li>
+                <li>
+                  <input type="submit" class="button button_orange full-width archive-input-field font-largest font-bold" value="{{ search }}">
+                </li>
+              </ul>
+            </form>
+          </div>
+          <div class="col-lg-9 col-md-9 col-sm-9">
+            <div class="appear-animation fadeInDown appear-animation-visible" data-appear-animation="fadeInDown" data-appear-animation-delay="1150" style="animation-delay: 1150ms;">
+              <div class="tabs variation_2 tabs variation_3 ui-tabs ui-widget ui-widget-content ui-corner-all">
+                <!--tabs navigation-->
+                <div class="clearfix">
+                  <h2 class="section_title">{{ highest_rate }}</h2>
+                  <div class="clearfix tabs_conrainer">
+                    <ul class="tabs_nav clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                      
+                      {% if not first_highest_rates_articles %}
+                        <h2 class="center">{{ no_articles }}</h2>
+                      {% else %}
+                        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tab-1" aria-labelledby="ui-id-1" aria-selected="true"><a href="#tab-1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">1</a></li>
+                      {% endif %}
+                        
+                      {% for container in highest_rates_articles %}
+                        <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tab-{{ container.index }}" aria-labelledby="ui-id-{{ container.index }}" aria-selected="false"><a href="#tab-{{ container.index }}" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-{{ container.index }}">{{ container.index }}</a></li>
+                      {% endfor %}
+
+                    </ul>
+                  </div>
+                </div>
+                <!--tabs content-->
+                <div class="tabs_content">
+                  <div id="tab-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+                    <div class="row">
+                      
+                      {% for package in first_highest_rates_articles.packages %}
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6" style="float:right">
+                          <div class="section_post_left">
+                            <div class="scale_image_container">
+                              <a href="{% url 'show_article' package.article.article_ID %}"><img src="{{ package.article.cover_image.url }} " alt="" class="scale_image" width="555" height="209"></a>
+                              <div class="post_image_buttons">
+                                <a href="{% url 'get_field_articles' package.article.field_ar %}" class="button banner_button food">
+                                  {% if request.session.lang == 'ar' %}
+                                    {{ package.article.get_field_ar_display }}
+                                  {% else %}
+                                    {{ package.article.get_field_en_display }}
+                                  {% endif %}
+                                </a>
+                                <a href="{% url 'show_article' package.article.article_ID %}" class="icon_box">
+                                  {% if package.article.type == 'VIDEO' %}
+                                    <i class="fa fa-video-camera"></i>
+                                  {% else %}
+                                    {% if package.article.type == 'AUDIO' %}
+                                    <i class="fa fa-headphones fa-lg"></i>
+                                    {% else %}
+                                      {% if package.article.type == 'IMAGE' %}
+                                        <i class="fa fa-picture-o"></i>
+                                      {% else %}
+                                        <i class="fa fa-file-text"></i>
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endif %}
+                                  
+                                </a>
+                              </div>
+                              
+                              {% if package.article.field_ar != request.session.field %}   
+                                {% if package.article.price and request.session.role != 'subscriber'%}
+                                  <div class="canvas bg_canvas_1">
+                                    <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                                  </div>
+                                {% endif %}
+                              {% endif %}
+                                
+                            </div>
+                            <div class="clearfix">
+                              <div class="f_left">
+                                <div class="event_date" style="color:gray">{{ package.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                              </div>
+                              <div class="f_right event_info">
+                                
+                                  <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                                  <span>{{ package.comments }}</span>
+
+                                  <span style="padding:0 4px">|</span>
+
+                                  <i class="fa fa fa-star d_inline_m m_right_3"></i> 
+                                  <span>
+                                    
+                                    {% if package.rates %}
+                                      {{ package.rates }}
+                                    {% else %}
+                                      0
+                                    {% endif %}
+                                      
+                                  </span>
+
+                                  <span style="padding:0 4px">|</span>
+
+                                  <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                                  <span>{{ package.article.number_of_views }}</span>
+                                
+                              </div>
+                            </div>
+                            <div class="post_text">
+                              
+                              <h2 class="post_title"><a href="{% url 'show_article' package.article.article_ID %}">
+                                {% if request.session.lang == 'ar' %}
+                                  {{ package.article.title_ar }}
+                                {% else %}
+                                  {{ package.article.title_en }}
+                                {% endif %}
+
+                              </a></h2>
+
+                              <p>
+                                {% if request.session.lang == 'ar' %}
+                                  {{ package.article.brief_of_article_ar }}
+                                {% else %}
+                                  {{ package.article.brief_of_article_en }}
+                                {% endif %}
+
+                                <span style="font-size: 17px; font-weight: bold;"><a href="{% url 'show_article' package.article.article_ID %}">{{ read_more }}</a></span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                       
+                      
+                    </div>
+                  </div>
+
+                  {% for container in highest_rates_articles %}
+                    <div id="tab-{{ container.index }}" aria-labelledby="ui-id-{{ container.index }}" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="false" aria-hidden="true" style="display: none;">
+                      <div class="row">
+                      
+                        {% for package in container.packages %}
+                          <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6" style="float:right">
+                            <div class="section_post_left">
+                              <div class="scale_image_container">
+                                <a href="{% url 'show_article' package.article.article_ID %}"><img src="{{ package.article.cover_image.url }} " alt="" class="scale_image" width="555" height="209"></a>
+                                <div class="post_image_buttons">
+                                  <a href="{% url 'get_field_articles' package.article.field_ar %}" class="button banner_button food">
+                                    {% if request.session.lang == 'ar' %}
+                                      {{ package.article.get_field_ar_display }}
+                                    {% else %}
+                                      {{ package.article.get_field_en_display }}
+                                    {% endif %}
+                                  </a>
+                                  <a href="{% url 'show_article' package.article.article_ID %}" class="icon_box">
+                                    {% if package.article.type == 'VIDEO' %}
+                                      <i class="fa fa-video-camera"></i>
+                                    {% else %}
+                                      {% if package.article.type == 'AUDIO' %}
+                                      <i class="fa fa-headphones fa-lg"></i>
+                                      {% else %}
+                                        {% if package.article.type == 'IMAGE' %}
+                                          <i class="fa fa-picture-o"></i>
+                                        {% else %}
+                                          <i class="fa fa-file-text"></i>
+                                        {% endif %}
+                                      {% endif %}
+                                    {% endif %}
+                                    
+                                  </a>
+                                </div>
+                                
+                                {% if package.article.field_ar != request.session.field %}   
+                                  {% if package.article.price and request.session.role != 'subscriber'%}
+                                    <div class="canvas bg_canvas_1">
+                                      <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                                    </div>
+                                  {% endif %}
+                                {% endif %}
+                                  
+                                
+                              </div>
+                              <div class="clearfix">
+                                <div class="f_left">
+                                  <div class="event_date" style="color:gray">{{ package.article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                                </div>
+                                <div class="f_right event_info">
+                                  
+                                    <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                                    <span>{{ package.comments }}</span>
+                                
+                                    <span style="padding:0 4px">|</span>
+
+                                    <i class="fa fa fa-star d_inline_m m_right_3"></i> 
+                                    <span>
+                                      
+                                      {% if package.rates %}
+                                        {{ package.rates }}
+                                      {% else %}
+                                        0
+                                      {% endif %}
+                                        
+                                    </span>
+                                  
+                                    <span style="padding:0 4px">|</span>
+                                    
+                                    <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                                    <span>{{ package.article.number_of_views }}</span>
+                                  
+                                </div>
+                              </div>
+                              <div class="post_text">
+                                
+                                <h2 class="post_title"><a href="{% url 'show_article' package.article.article_ID %}">
+                                  {% if request.session.lang == 'ar' %}
+                                    {{ package.article.title_ar }}
+                                  {% else %}
+                                    {{ package.article.title_en }}
+                                  {% endif %}
+        
+                                </a></h2>
+        
+                                <p>
+                                  {% if request.session.lang == 'ar' %}
+                                    {{ package.article.brief_of_article_ar }}
+                                  {% else %}
+                                    {{ package.article.brief_of_article_en }}
+                                  {% endif %}
+        
+                                  <span style="font-size: 17px; font-weight: bold;"><a href="{% url 'show_article' package.article.article_ID %}">{{ read_more }}</a></span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                          
+                        
+        
+                      </div>
+                    </div>
+                  {% endfor %}
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <br/>
+{% endblock body %}

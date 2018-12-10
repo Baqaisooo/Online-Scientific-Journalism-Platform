@@ -1,0 +1,434 @@
+
+
+
+{% load static %}
+
+
+
+
+
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9" lang="en"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+  <title>{{ page_title }}</title>
+  <meta name = "format-detection" content = "telephone=no" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--meta info-->
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'scientificJournalism/images/logo_AR.png' %} ">
+  <!--stylesheet include-->
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/bootstrap.min.css'%}">
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/style.css' %}">
+  <!-- RTL Styles -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link rel="stylesheet" href=" {% static 'scientificJournalism/css/font-awesome.min.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/responsive.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/owl.carousel.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/animate.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/flexslider.css' %} ">
+  <!--modernizr-->
+  <script src=" {% static 'scientificJournalism/js/jquery.modernizr.js' %} "></script>
+  
+  <!--Our Customization-->
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/osjp_header.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/osjp_writer.css' %} ">
+
+  <!-- Alert Message CSS-->
+  <link href=" {% static 'scientificJournalism/css/alert.css' %} " rel="stylesheet" media="all">
+  
+
+  {% if dir == 'rtl' %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/rtl.css' %}">
+  {% else %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/ltr.css' %}">
+  {% endif %}
+
+  <style>
+    .button.banner_button {
+      padding: 2px 7px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #f29427
+    }
+
+    
+  </style>
+  {% block extrastyle %}
+  {% endblock extrastyle %}
+  
+
+</head>
+<body class="wide_layout">
+   
+  <div class="loader"></div>
+  <!--[if (lt IE 9) | IE 9]>
+    <div class="ie_message_block">
+      <div class="container">
+        <div class="wrapper">
+          <div class="clearfix"><i class="fa fa-exclamation-triangle f_left"></i><b>Attention!</b> This page may   not display correctly. You are using an outdated version of Internet Explorer. For a faster, safer browsing experience.<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode" class="button button_type_3 button_grey_light f_right" target="_blank">Update Now!</a></div>
+        </div>
+      </div>
+    </div>
+  <![endif]-->
+
+  <!--cookie-->
+  <!-- <div class="cookie">
+          <div class="container">
+            <div class="clearfix">
+              <span>Please note this website requires cookies in order to function correctly, they do not store any specific information about you personally.</span>
+              <div class="f_right"><a href="#" class="button button_type_3 button_orange">Accept Cookies</a><a href="#" class="button button_type_3 button_grey_light">Read More</a></div>
+            </div>
+          </div>
+        </div>-->
+
+
+
+  <div class="wrapper_container">
+
+    <!--==============================header=================================-->
+
+    <header role="banner" class="header header_4">
+      <div class="h_bot_part">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="clearfix display_flex">
+                <a href="{% url 'writer_homepage' %}" class="f_left logo"><img src="{% static 'scientificJournalism/images/logo_AR.png' %} " alt="" height="100" width="170"></a>
+                <div class="top_header_menu">
+                    <a href="{% url 'writer_homepage' %}" class="button button_type_4 button_dark_blue">{{ mainpage }}</a>
+                    <a href="{% url 'archive' %}" class="button button_type_4 button_dark_blue">{{ archive }}</a>
+                </div>
+                <div class="margin_auto">
+                    <a href=" {% url 'new_article' %} " class="button button_type_4 button_orange">{{ create_new_article }}</a>
+                </div>
+                <div class="f_right display_flex margin_header_content">
+                    <form class="search" action="{% url 'online_search' %}" method="POST" id="search_form">
+                      {% csrf_token %}
+                      <input type="text" name="key_word" placeholder="{{ search }}">
+                      <button type="submit" form="search_form"><i class="fa fa-search"></i></button>
+                    </form>
+                      <!--language settings-->
+                      <div class="lang_button">
+                        <a role="button" href="#" style="color: white; font-size: 22px; font-weight: bold;"><span class="d_mxs_none">{{ language }}</span></a>
+                        <ul class="dropdown_list language-item">
+                          <li><a href="{% url 'change_lang' 'ar' %}" class="tr_delay_hover default_t_color"><img class="d_inline_middle" src="{% static 'scientificJournalism/images/flag_ar.png' %} " alt="">العربية</a></li>
+                          <li><a href="{% url 'change_lang' 'en' %}" class="tr_delay_hover default_t_color"><img class="d_inline_middle" src="{% static 'scientificJournalism/images/flag_en.jpg' %} " alt="">English</a></li>
+                        </ul>
+                      </div>
+                      <!--INFO-->
+                      <div class="login_button margin_auto">
+                        <a href="#"><img src="{{request.session.image}}" width=78 height=78 class="personal-img"/></a>
+                        <div class="popup dropdown_image">
+                            <ul>
+                              <li>
+                                <img src=" {{request.session.image}} " width=80 height=80 class="personal-img"/>
+                                <h3>{{ request.session.name }}</h3>
+                              </li>
+                              <li>
+                                <a href="#" ><i class="far fa-user"></i>{{ my_profile }}</a>
+                              </li>
+                              <li>
+                                <a href="{% url 'my_articles' %}" ><i class="fas fa-pen"></i>{{ all_my_articles }}</a>
+                              </li>
+                              <li>
+                                <a href=" {% url 'logout' %} "><i class="fas fa-sign-out-alt"></i>{{ logout }}</a>
+                              </li>
+                            </ul>
+                          
+                        </div>
+                      </div>
+                      
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--main menu container-->
+      
+      {% if not is_archive %}
+        
+        <div class="menu_wrap">
+          <div class="container clearfix display_flex">
+            <!--button for responsive menu-->
+            <button id="menu_button">
+            </button>
+            <!--main menu-->
+            <nav role="navigation" class="main_menu margin_auto">  
+              <ul>
+                <li class="extra_info_none"><a href=" {% url 'mainpage' %} ">{{ mainpage }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li class="extra_info_none"><a href="#">{{ archive }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="IT"><a href="{% url 'get_field_articles' 'IT' %}">{{ IT }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="HEALTH"><a href="{% url 'get_field_articles' 'HEALTH' %}">{{ health }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="ECOLOGY"><a href="{% url 'get_field_articles' 'ECOLOGY' %}">{{ ecology }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="ORGANISMS"><a href="{% url 'get_field_articles' 'ORGANISMS' %}">{{ organisms }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="NATURE"><a href="{% url 'get_field_articles' 'NATURE' %}">{{ nature }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="CHEMICAL"><a href="{% url 'get_field_articles' 'CHEMICAL' %}">{{ chemicals }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="ENGINEERING"><a href="{% url 'get_field_articles' 'ENGINEERING' %}">{{ engineering }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+                <li id="MATH"><a href="{% url 'get_field_articles' 'MATH' %}">{{ math }}<span class="plus"><i class="fa fa-plus-square-o"></i><i class="fa fa-minus-square-o"></i></span></a>
+                  
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      
+      {% endif %}
+  
+    </header>
+
+    <!--==============================Main Content=================================-->
+
+    {% block body %}
+    {% endblock body %}
+
+
+
+    <!--==============================footer=================================-->
+    
+    <!--markup footer-->
+    <footer class="footer footer_2 h_bot_part">
+      <div class="footer_top_part">
+        <div class="container-fluid">
+          <div class="row flex_reversed">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+              <div class="widget widget_social_icons clearfix" data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+                <h3 class="widget_title">{{ keep_touch }}</h3>
+                <ul>
+                  <li class="facebook">
+                    <span class="tooltip">Facebook</span>
+                    <a href="#">
+                      <i class="fa fa-facebook"></i>
+                    </a>
+                  </li>
+                  <li class="twitter">
+                    <span class="tooltip">Twitter</span>
+                    <a href="#">
+                      <i class="fa fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li class="youtube">
+                    <span class="tooltip">Youtube</span>
+                    <a href="#">
+                      <i class="fa fa-youtube-play"></i>
+                    </a>
+                  </li>
+                  <li class="flickr">
+                    <span class="tooltip">Flickr</span>
+                    <a href="#">
+                      <i class="fa fa-flickr"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div  class="widget widget_social_icons clearfix" data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+                <a class="widget_title extra_info" href="#" >{{ policy }}</a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+              
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+              <div class="widget widget_text" data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+                <a href="{% url 'mainpage' %}" class="logo"><img src="{% static 'scientificJournalism/images/logo_AR.png' %} " width="100" height="100" alt=""></a>
+                <p>{{ about_us }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--copyright part-->
+      <div class="footer_bottom_part">
+        <div class="container clearfix">
+          <p class="footer-cr-text">&copy; 2018 <span>Scientific Gate</span>. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+
+  <!--scripts include-->
+  <script src=" {% static 'scientificJournalism/js/jquery-2.1.0.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery-ui.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.queryloader2.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jflickrfeed.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/owl.carousel.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/retina.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/apear.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/circles.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.tweet.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.themepunch.tools.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/jquery.themepunch.revolution.min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/plugins.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/script.js' %} "></script>
+
+  <script src=" {% static 'scientificJournalism/js/jquery.flexslider-min.js' %} "></script>
+  <script src=" {% static 'scientificJournalism/js/alert_timer.js' %} "></script>
+
+
+  <script>
+    jQuery(document).ready(function() {
+      jQuery('.rev_slider').revolution({
+        delay:9000,
+        startwidth:1170,
+        startheight:500,
+        hideThumbs:0,
+        fullWidth:"on",
+        hideTimerBar:"on",
+        soloArrowRightHOffset:30,
+        soloArrowLeftHOffset:30,
+        shadow:0
+      });
+
+      $('.rev_slider').parent().find('.tp-bullets').remove();
+
+    });
+  </script>
+
+  <script>
+    var colors = [['#fa985d', '#ffffff']], circles = [];
+    var child = document.getElementById('circles-1');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      8.0,
+        radius:     19,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-2');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      7.7,
+        radius:     19,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-3');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      9.2,
+        radius:     19,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-4');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      6.2,
+        radius:     14,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-5');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      6.2,
+        radius:     14,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-6');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      8.0,
+        radius:     19,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-7');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      7.7,
+        radius:     19,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-8');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      9.2,
+        radius:     19,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+
+    var child = document.getElementById('circles-9');
+    circles.push(Circles.create({
+        id:         child.id,
+        value:      6.2,
+        radius:     14,
+        width:      3,
+        maxValue:   10,
+        duration:   1000,
+        text:       function(value){return value;},
+        colors:    ['#fa985d', '#ffffff']
+    }));
+  </script>
+
+  
+  {% block script %}
+  {% endblock script %}
+  
+
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Scientific Gate Administration</a></h1>
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+    #header{
+        background-color: #1f74ad
+    }
+
+    .header_nav{
+        padding: 0 15px;
+        font-size: 16px
+    }
+
+    div.breadcrumbs {
+        background-color: #3498db;
+    }
+</style>
+{% endblock %}
+
+{% block nav-global %}
+    <a class='header_nav' href="{% url 'statistics' %}">Some Statistics</a> 
+    <a class='header_nav' href="#">Manage Settings</a>
+    <a class='header_nav' href="#">Manage Acounts</a>
+{% endblock %}

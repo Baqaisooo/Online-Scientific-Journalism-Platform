@@ -1,0 +1,51 @@
+
+
+.button.banner_button {
+    padding: 2px 6px;
+    font-size: 11px !important;
+    font-weight: unset !important;
+    background-color: #f29427
+}
+
+
+.canvas{
+    border-bottom-left-radius: 45px; 
+    border-bottom-right-radius: 0; 
+}
+
+
+ul, ol {
+    direction: ltr;
+}
+
+
+.custom_select .select_title:before{
+    left: unset;
+    right: 0;
+}
+
+
+.ui-tabs-panel> .row > .col-md-4,.ui-tabs-panel> .row > .col-md-6{
+    float: left !important;
+}
+
+
+[class*="header_"] .main_menu > ul > li > a {
+    font-size: 17px !important;
+}
+
+
+.div-margin {
+    margin-right: 0;
+}
+
+
+.flex_reversed {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+
+.lock_customization {
+    margin: 10px 14px 20px 15px;
+}

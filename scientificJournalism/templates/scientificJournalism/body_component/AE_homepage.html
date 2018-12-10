@@ -1,0 +1,333 @@
+
+
+{% extends 'scientificJournalism/base_component/revision.html' %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block body %}
+
+{% load tz %}
+
+
+{% block extrastyle %}
+    <style>
+        .table_type_1 tr th{
+            width: unset;
+        }
+
+        .nav_table_tab {
+            width:33.333% !important; 
+            cursor: pointer;
+            background-color: #3498db ;
+            border: 1px solid #1f74ad
+        }
+
+        .table_type_1.var2 tr .nav_table_tab:first-child{
+            background-color: #1f74ad 
+        }
+
+        .table_header{
+            background-color: #1f74ad !important;
+            border: 1px solid #3498db;
+            border-top: none
+        }
+
+        img{
+            width: 100px;
+            height: 100px;
+        }
+
+        .article_field{
+            display: flex;
+        }
+
+        tr{
+            vertical-align: middle;
+        }
+
+        tr td a {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            height: 25px;
+            font-size: large;
+        }
+
+        .reject_btn,.grap_btn{
+            color: #a94442;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+        }
+
+        .accept_btn{
+            color: #3c763d;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+        }
+
+        .btn{
+            color: #31708f;
+            background-color: #d9edf7;
+            border: 1px solid #bce8f1;
+        }
+
+        #overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        #overlay_reject {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        .close_btn{
+            font-size: 40px;
+            color: white;
+            top: 10%;
+            right: 10%;
+            position: absolute;
+        }
+
+        .assigned_box {
+            display: block;
+            width: 60%;
+            height: 65%;
+            overflow-x: auto;
+            margin: 9% auto;
+            background-color: #fff;
+        }
+
+        .choose_field{
+
+        }
+        
+        .btnxx {
+            width: 110px;
+            height: 40px;
+            font-size: x-large;
+        }
+    </style>
+{% endblock extrastyle %}
+    <!--==============================Alert Messages=================================-->
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <div class="container-fluid" id='alert' data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+            <br/>
+            <div class="alert center {{ message.tags }}">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{ message }}
+            </div>
+          </div>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    
+
+    <!--====================my articles=======================-->
+
+    <div class="container">
+        <div class="section_5">
+            <table class="table_type_1 var2">
+                <tbody style="text-align-last:center">
+                    <tr class="f_size_large">
+                        <th class="nav_table_tab" data-table="1"> مقالات جديدة ({{ assigned_articles|length }}) </th>
+                        <th class="nav_table_tab" data-table="2"> مقالات تمت مراجعتها من المراجع ({{ reviewed_articles|length }})</th>
+                        <th class="nav_table_tab" data-table="3"> مقالات عند المراجع ({{ articles_with_reviewer|length }})</th>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <table class="table_type_1 var2 tableee tab__1">
+                <tbody style="text-align-last:center">
+                    <tr class="f_size_large">
+                        <th class="table_header" colspan="2" style="background-color: #1f74ad; width: 50%">المقالة</th>
+                        <th class="table_header" style="width:20%">منذ</th>
+                        <th class="table_header" style="width:15%">المجال</th>
+                        <th class="table_header" style="width:15%">الإعتذار</th>
+                    </tr>
+                    
+                    {% for article in assigned_articles %}
+                        <tr>
+                            <td colspan="2">
+                                <div class="article_field">
+                                    <img src="{{ article.article_ID.cover_image.url }}" alt="" >
+                                    <h3 style="margin:auto 8px"><a href="{% url 'show_new_AE_article' article.article_ID.article_ID %}" style="color:black">{{ article.article_ID.title_ar }}</a> </h3>
+                                </div>
+                            </td>
+                            <td><h4 style="direction: ltr">{{ article.assign_date|naturaltime }}</h4></td>
+                            <td><h3 style="margin:auto 8px">{{ article.article_ID.get_field_ar_display }}</h3></td>
+                            <td>
+                                <a href="{% url 'AE_apologize' article.article_ID.article_ID %}" class="reject_btn" >إعتذار</a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                </tbody> 
+            </table>
+
+            <table class="table_type_1 var2 tableee tab__2" style="display:none">
+                <tbody style="text-align-last:center">
+                    <tr class="f_size_large">
+                        <th class="table_header" colspan="2" style="background-color: #1f74ad; width: 45%">المقالة</th>
+                        <th class="table_header" style="width:16%">المجال</th>
+                        <th class="table_header" style="width:20%">أسندت إليّ منذ</th>
+                        <th class="table_header" style="width:19%">المراجع</th>
+                    </tr>
+
+                    {% for RA in reviewed_articles %} <!-- RA appriviation of Reviewed Article -->
+                        <tr>
+                            <td colspan="2">
+                                <div class="article_field">
+                                    <img src="{{ RA.article_ID.cover_image.url }}" alt="" >
+                                    <h3 style="margin:auto 8px"><a href="{% url 'show_AE_article' RA.article_ID.article_ID %}" style="color:black">{{ RA.article_ID.title_ar }}</a> </h3>
+                                </div>
+                            </td>
+                            <td><h3 style="margin:auto 8px">{{ RA.article_ID.get_field_ar_display }}</h3></td>
+                            <td><h3 style="margin:auto 8px">{{ RA.assign_date|naturaltime }}</h3></td>
+                            <td><h4 style="margin:auto 8px"> {{ RA.reviewer_ID.reviewer_ID.first_name|add:' '|add:RA.reviewer_ID.reviewer_ID.last_name }}</h4></td>
+                            
+                        </tr>
+                    {% endfor %}
+                            
+                </tbody> 
+            </table>
+
+            <table class="table_type_1 var2 tableee tab__3" style="display:none">
+                <tbody style="text-align-last:center">
+                    <tr class="f_size_large">
+                        <th class="table_header" colspan="2" style="background-color: #1f74ad; width: 38%">المقالة</th>
+                        <th class="table_header" style="width:13%">المجال</th>
+                        <th class="table_header" style="width:14%">عند المراجع منذ</th>
+                        <th class="table_header" style="width:14%">أسندت إليّ منذ</th>
+                        <th class="table_header" style="width:11%">المراجع</th>
+                        <th class="table_header" style="width:10%">سحب المقالة</th>
+                    </tr>
+
+                    {% for AWR in articles_with_reviewer %} <!-- AWR appriviation of Article under revision-->
+                        <tr>
+                            <td colspan="2">
+                                <div class="article_field">
+                                    <img src="{{ AWR.article_ID.cover_image.url }}" alt="" >
+                                    <h3 style="margin:auto 8px"><a href="#" style="color:black; pointer-events: none; cursor: default;">{{ AWR.article_ID.title_ar }}</a> </h3>
+                                </div>
+                            </td>
+                            <td><h3 style="margin:auto 8px">{{ AWR.article_ID.get_field_ar_display }}</h3></td>
+                            <td><h4 style="direction: ltr">{{ AWR.invite_date|naturaltime }}</h4></td>
+                            <td><h4 style="direction: ltr">{{ AWR.assign_date|naturaltime }}</h4></td>
+                            <td><h4 style="margin:auto 8px">
+                                {{ AWR.reviewer_ID.reviewer_ID.first_name|add:' '|add:AWR.reviewer_ID.reviewer_ID.last_name }}                                    
+                            </h4></td>
+                            <td>
+                                <a href="{% url 'grap_reviewer_article' AWR.article_ID.article_ID %}" class="grap_btn">سحب</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    
+                </tbody> 
+            </table>
+            
+        </div>
+    </div>
+
+
+<br/>
+<br/>
+{% endblock body %}
+
+
+
+  
+{% block script %}
+    
+    <script>
+        $( document ).ready(function() {
+            $(".nav_table_tab").css("background-color", "#3498db")
+            $(".nav_table_tab:first").css("background-color", "#1f74ad")
+        });
+    </script>
+    
+    <script>
+        $(".nav_table_tab").click(function(){
+            
+            // css('background-color','#1077ad ');
+            $(".nav_table_tab").css("background-color", "#3498db")
+            $(this).css("background-color", "#1f74ad")
+            var id = $(this).attr('data-table');
+            $(".tableee").css('display','none')
+            $(".tab__"+id).css('display','table')
+        })
+    </script>
+
+    <script>
+        $('.routation').click(function () {
+            $('#overlay').css('display','block')
+            $('#assign_article').disabled = true
+            var article_id = $(this).attr('id')
+            $('#assind_article_ID').attr('value',article_id)
+        })
+    </script>
+
+    
+    <script>
+        $('.close_btn').click(function() {
+            $('#overlay').css('display','none');
+            $('#overlay_reject').css('display','none');
+            $('input[name="writer_ID"]').prop('checked', false);
+            $('#myInput').val('');
+            $('#show_writer_name').html('');
+            $('#assign_article').css({'disabled':true,'opacity': 0.5})
+
+        })
+    </script>
+
+    <script>
+        $(document).ready(function(){
+          $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+    </script>
+
+    <script>
+        $('.choose_field').click(function(){
+            var name = $(this).parent().parent().children().children().html()
+            $('#show_writer_name').html(name)
+            $('#assign_article').css({'opacity': 1})
+            $('#assign_article').disabled = false
+
+            var AE_id = $(this).attr('value')
+            $('#assign_article').attr('value',AE_id)
+        })
+    </script>
+
+{% endblock script %}
+
+

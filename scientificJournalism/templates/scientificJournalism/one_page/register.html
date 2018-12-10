@@ -1,0 +1,313 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <link rel="stylesheet" type="text/css" href=" {% static 'scientificJournalism/css/normalize.css' %} " />
+    <link rel="stylesheet" type="text/css" href=" {% static 'scientificJournalism/css/demo.css' %} " />
+    <link rel="stylesheet" type="text/css" href=" {% static 'scientificJournalism/css/component.css' %} " />
+    <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Title Page-->
+    <title>{{ page_title }}</title>
+
+    <!-- Icons font CSS-->
+    <link href=" {% static 'scientificJournalism/vendor/mdi-font/css/material-design-iconic-font.min.css' %} " rel="stylesheet" media="all">
+
+    
+    <!-- Vendor CSS-->
+    <link href=" {% static 'scientificJournalism/vendor/select2/select2.min.css' %} " rel="stylesheet" media="all">
+    <link href=" {% static 'scientificJournalism/vendor/datepicker/daterangepicker.css' %} " rel="stylesheet" media="all">
+
+    <!-- Subscribe CSS-->
+    <link href=" {% static 'scientificJournalism/css/subscribe.css' %} " rel="stylesheet" media="all">
+    
+    <!-- Alert Message CSS-->
+    <link href=" {% static 'scientificJournalism/css/alert.css' %} " rel="stylesheet" media="all">
+
+    <style>
+        {% if dir == 'rtl'  %}
+            .select2-selection__arrow{
+                left : 0 !important
+            }
+        {% else %}
+            .select2-selection__arrow{
+                    right : 0 !important
+                }
+        {% endif %}
+    </style>
+
+</head>
+
+<body dir="{{ dir }}">
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                
+                <!--==============================Alert Messages=================================-->
+
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <div class="container-fluid" id='alert' data-appear-animation="fadeInDown" data-appear-animation-delay="1150">
+                            <br/>
+                            <div class="alert center {{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+    
+                <!--==============================Registration Form=================================-->
+                <!-- <br/>
+                <div class="row" style="display: block; text-align: center;">
+                    <button class="btn btn--radius-2 btn--blue" style="width:45%; margin:5px" id="new">أنا مستخدم جديد</button>
+                    <button class="btn btn--radius-2 btn--blue" style="width:45%; margin:5px; opacity:0.5" id="exist">أنا لدي حساب في قسم آخر</button>
+                </div>
+
+                <div class="card-body">
+                    <h2 class="title">{{title}}</h2>
+                    <form action=" {% url 'registering' %} " method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row row-space">
+                            <div style="width:100%">
+                                <div class="input-group">
+                                    <label class="label">{{ Email }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="email" name="email" Required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ password }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="password" id="password" name="password" Required>
+                                    <span id='message2'></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ confirm_password }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="password" id="confirm_password" name="confirm_password" Required>
+                                    <span id='message'></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit" id="submit" disabled=true style="opacity:0.5">{{ register }}</button>
+                        </div>
+                    </form>
+                    <br/>
+                    <h4 style="text-align:center ">{{ have_account }}<a href=" {% url 'mainpage' %} " >{{ back }}</a></h4>
+                </div> -->
+
+                <div class="card-body">
+                    <h2 class="title">{{title}}</h2>
+                    <form action=" {% url 'registering' %} " method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{first_name}}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="text" name="first_name" Required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ last_name }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="text" name="last_name" Required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ birthdate }}</label><span style="color:red">*</span>
+                                    <div class="input-group-icon">
+                                        <input class="input--style-4 js-datepicker" type="text" name="birthday" id="birthdate" Required>
+                                        <i class="zmdi zmdi-calendar-note input-icon  js-btn-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ gender }}</label><span style="color:red">*</span>
+                                    <div class="p-t-10">
+                                        <label class="radio-container m-r-45">{{ male }}
+                                            <input type="radio" checked="checked" name="gender" value="male">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-container">{{ female }}
+                                            <input type="radio" name="gender" value="female">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ Email }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="email" name="email" Required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ phone  }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="text" name="phone" Required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ speciality }}</label><span style="color:red">*</span>
+                                    <div class="rs-select2 js-select-simple select--no-search input_icon_{{dir}}">
+                                        <select name="specialty" Required>
+                                            <option disabled="disabled" selected="selected"></option>
+                                            <option value="HEALTH">الصحة</option>
+                                            <option value="IT">تقنية المعلومات</option>
+                                            <option value="ECOLOGY">البيئة</option>
+                                            <option value="ORGANISMS">الحياة</option>
+                                            <option value="NATURE">الكون و الطبيعة</option>
+                                            <option value="CHEMICAL">الكيميائيات</option>
+                                            <option value="MATH">الرياضيات</option>
+                                            <option value="ENGINEERING">هندسيات</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ workplace }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="text" name="workplace" Required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ country }}</label><span style="color:red">*</span>
+                                    <div class="rs-select2 js-select-simple select--no-search input_icon_{{dir}}">
+                                        <select name="country" Required>
+                                            <option disabled="disabled" selected="selected"></option>
+                                            <option value="المملكة العربية السعودية">السعودية</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ city }}</label><span style="color:red">*</span>
+                                    <div class="rs-select2 js-select-simple select--no-search input_icon_{{dir}}">
+                                        <select name="city" Required>
+                                            <option disabled="disabled" selected="selected"></option>
+                                            <option value="جدة">جدة</option>
+                                            <option value="الرياض">الرياض</option>
+                                            <option value="الدمام">الدمام</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ password }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="password" id="password" name="password" Required>
+                                    <span id='message2'></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ confirm_password }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4" type="password" id="confirm_password" name="confirm_password" Required>
+                                    <span id='message'></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            
+                            <div class="input-group">
+                                <label class="label">{{ personal_photo }}</label>
+                                <br/>
+                                <input type="file" name="personal_image" id="file-1" class="inputfile inputfile-1" style="display:none" accept="image/jpeg, image/png, image/gif"/>
+                                <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>{{ image_field }}&hellip;</span></label>
+                            </div>
+                        </div>
+                        
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit" id="submit" disabled=true style="opacity:0.5">{{ register }}</button>
+                        </div>
+                    </form>
+                    <br/>
+                    <h4 style="text-align:center ">{{ have_account }}<a href=" {% url 'mainpage' %} " >{{ back }}</a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src=" {% static 'scientificJournalism/vendor/jquery/jquery.min.js' %} "></script>
+    <!-- Vendor JS-->
+    <script src=" {% static 'scientificJournalism/vendor/select2/select2.min.js' %} "></script>
+    <script src=" {% static 'scientificJournalism/vendor/datepicker/moment.min.js' %} "></script>
+    <script src=" {% static 'scientificJournalism/vendor/datepicker/daterangepicker.js' %} "></script>
+
+    <!-- Main JS-->
+    <script src=" {% static 'scientificJournalism/js/subscribe.js' %} "></script>
+    <script src=" {% static 'scientificJournalism/js/custom-file-input.js' %} "></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+
+    <script>
+        $('#birthdate').datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    </script>
+
+
+    <script>
+        $('#password, #confirm_password').on('keyup', function () {
+            if ($('#password').val().length >= 6){
+                $('#message2').html('').css('color', 'blue');
+                
+                if ($('#password').val() == $('#confirm_password').val()){
+                    $('#message').html('Matching').css('color', 'green');
+                    $('#submit').prop('disabled',false).css('opacity',1);
+                }
+                    
+                else {
+                    $('#message').html('Not Matching').css('color', 'red');
+                    $('#submit').prop('disabled',true).css('opacity',0.5);
+                }
+            }
+            else {
+                $('#message2').html('password should be 6 characters or more').css('color', 'blue');
+                $('#message').html('').css('color', 'green');
+                $('#submit').prop('disabled',true).css('opacity',0.5);
+            }
+            });
+    </script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<!-- end document-->

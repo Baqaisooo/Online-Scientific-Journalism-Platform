@@ -1,0 +1,50 @@
+
+
+/* =====================writer image======================= */
+
+.dropdown_image{
+    background-color: rgb(226, 224, 205);
+    padding: 0;
+    top: auto
+}
+
+.popup ul li{
+    margin-bottom: 0;
+    border-bottom: solid 0.5px rgb(0, 0, 0);
+    font-size: 15px;
+    font-weight: bold
+}
+
+.popup ul li:nth-child(2n) {
+    margin-bottom: 0;
+}
+
+.dropdown_image  ul  li  a {
+    display: block;
+    padding: 15px 20px;
+}
+
+.dropdown_image  ul  li  a:hover {
+    background-color: #ff0000;
+}
+
+.language-item {
+    position: absolute;
+    left: unset !important;
+    right: unset !important;
+    top: auto;
+}
+
+.lang_button {
+    margin: auto 20px;
+}
+
+.personal-img {
+    border: solid 2px black;
+    border-radius: 50%;
+}
+
+.popup ul li img {
+    display: block;
+    margin: 18px 32% 5px;
+}

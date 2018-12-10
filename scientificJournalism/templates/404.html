@@ -1,0 +1,111 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9" lang="en"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+  <title>Scientific Gate - 404</title>
+  <meta name = "format-detection" content = "telephone=no" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--meta info-->
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <!--stylesheet include-->
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/bootstrap.min.css'%}">
+  <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/style.css' %}">
+  <link rel="stylesheet" href=" {% static 'scientificJournalism/css/font-awesome.min.css' %} ">
+  <link rel="stylesheet" type="text/css" media="all" href=" {% static 'scientificJournalism/css/responsive.css' %} ">
+
+
+
+  
+  <style>
+    .styling{
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: -webkit-gradient(linear, left bottom, right top, from(#d7cec7), to(#1f74ad));
+      background: -webkit-linear-gradient(bottom left, #d7cec7 0%, #1f74ad 100%);
+      background: -moz-linear-gradient(bottom left, #d7cec7 0%, #1f74ad 100%);
+      background: -o-linear-gradient(bottom left, #d7cec7 0%, #1f74ad 100%);
+      background: linear-gradient(to top right, #d7cec7 0%, #1f74ad 100%);
+    }
+  </style>
+
+</head>
+<body class="wide_layout" style="position: fixed;">
+   
+  <!--[if (lt IE 9) | IE 9]>
+    <div class="ie_message_block">
+      <div class="container">
+        <div class="wrapper">
+          <div class="clearfix"><i class="fa fa-exclamation-triangle f_left"></i><b>Attention!</b> This page may   not display correctly. You are using an outdated version of Internet Explorer. For a faster, safer browsing experience.<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode" class="button button_type_3 button_grey_light f_right" target="_blank">Update Now!</a></div>
+        </div>
+      </div>
+    </div>
+  <![endif]-->
+
+  <!--cookie-->
+  <!-- <div class="cookie">
+          <div class="container">
+            <div class="clearfix">
+              <span>Please note this website requires cookies in order to function correctly, they do not store any specific information about you personally.</span>
+              <div class="f_right"><a href="#" class="button button_type_3 button_orange">Accept Cookies</a><a href="#" class="button button_type_3 button_grey_light">Read More</a></div>
+            </div>
+          </div>
+        </div>-->
+  <div class="wrapper_container styling">
+   
+    <!--==============================content================================-->
+    <div class="content" style="flex: 8; display: flex;">
+      <div class="container" style="margin: auto;">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-0"></div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="section page_404">
+              <h2 class="title_404">404</h2>
+              <h2 class="section_title section_title_big">Page Not Found!</h2>
+              <p>We're sorry, but we can't find the page you were looking for. It's probably some thing we've done wrong but now we know about it and we'll try to fix it. In the meantime, try one of these options:</p>
+              <div class="buttons_404">
+                <a href="#" class="button button_type_2 button_grey_light" onClick="history.go(-1)">Go to Previous page</a>
+                <a href=" {% url 'mainpage' %} " class="button button_type_2 button_grey_light">Go to Home page</a>
+              </div>
+              <form class="search">
+                <input type="text" name="" placeholder="Search">
+                <button class=""><i class="fa fa-search"></i></button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-0"></div>
+        </div>
+        
+      </div>
+    </div>
+    <!--==============================footer=================================-->
+    <!--markup footer-->
+    <footer class="footer footer_1" style="flex: 1; display: flex;">
+
+      <!--copyright part-->
+      <div class="footer_bottom_part" style="margin: 0 auto; text-align: center;">
+        <div class="container clearfix">
+          <p style="float: none;">© 2014 <span>Revija</span>. All Rights Reserved.</p>
+          
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!--scripts include-->
+
+  <script src="js/script.js"></script>
+
+
+
+</body>
+</html>

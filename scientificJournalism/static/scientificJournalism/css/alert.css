@@ -1,0 +1,26 @@
+
+
+.alert {
+    padding: 14px 35px;
+    margin-bottom: 10px;
+    background: #ffe8ba;
+    font-size: large;
+    font-weight: 300;
+    border: 1px solid transparent;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.center {
+    text-align: center
+}

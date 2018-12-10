@@ -1,0 +1,403 @@
+{% extends extend %}
+
+{% load static %}
+
+{% load tz %}
+
+{% block body %}
+
+        <!--==============================content================================-->
+        <div class="content">
+            <div class="container">
+                <div class="row flex_reversed">
+                    <div class="col-lg-8 col-md-8 col-sm-12">
+                        <div class="section">
+                            
+                            <div class="clearfix page_theme">
+                                <div class="f_left">
+                                    <div class="post_image_buttons">
+                                        <div class="buttons_container">
+                                            <a href="#" class="button banner_button travel">
+                                                {% if request.session.lang == 'ar' %}
+                                                    {{ article.get_field_ar_display }}
+                                                {% else %}
+                                                    {{ article.get_field_en_display }}
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="event_date" style="color:black">{{ article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                                </div>
+                                <div class="f_right event_info">
+                                    
+                                    <i class="fa fa-comments-o d_inline_m m_right_3"></i> 
+                                    <span>{{ comments|length }} </span>
+                                    <span style="padding:0 4px">|</span>
+                                    <i class="fa fa fa-star-o d_inline_m m_right_3"></i> 
+                                    <span>
+                                        {% if not average.subscriber_rating__avg %}
+                                            0
+                                        {% else %}
+                                            {{ average.subscriber_rating__avg }}
+                                        {% endif %}
+                                    </span>
+                                    <span style="padding:0 4px">|</span>
+                                    <i class="fa fa-eye d_inline_m m_right_3"></i> 
+                                    <span>{{ article.number_of_views }}</span>
+                                    
+                                </div>
+                            </div>
+        
+                            <h2 class="section_title section_title_medium_var2">
+                                {% if request.session.lang == 'ar' %}
+                                    {{ article.title_ar }}
+                                {% else %}
+                                    {{ article.title_en }}
+                                {% endif %}
+                            </h2>
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <a href="#"><img src="{{ article.cover_image.url }}" alt="Cover Image" class="scale_image" width="750" height="375"></a>
+                                </div>
+                                <p>
+                                    {% if request.session.lang == 'ar' %}
+                                        {{ article.brief_of_article_ar }}
+                                    {% else %}
+                                        {{ article.brief_of_article_en }}
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                            {% if article.price and article.field_ar != request.session.field %}
+                                <div><br/>
+                                    <h2 class="section_title">{{ to_get_priced_article }}</h2>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                        <a href="#" class="button button_type_4 button_grey" style="padding:25px 30px; width:100%" id="buy-article">{{ buy_article }}</a>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                        <a href="{% url 'subscribe' %}" class="button button_type_4 button_orange" style="padding:25px 30px; width:100%">{{ subscribe_now }}</a>
+                                    </div>
+                                </div>
+                                
+                            {% endif %}
+                            <br>
+                            <div style=" border: 4px dashed #3e454c; padding: 10px; background-color: gainsboro; display:none" id="payment_window">
+                                <form action="{% url 'buy_article' article.article_ID %}" method="POST">
+                                    {% csrf_token %}
+                                    <div>
+                                        <h3 class="section_title">{{ payment_info }}</h3>
+                                        <img src="{% static 'scientificJournalism/images/VisaMasterCard.jpg' %}" alt="" height="85" width="500">
+                                    </div>
+                                    <br/>
+                                    <div class="control-group">
+                                        <label class="control-label">{{ card_number }}<span class="required">*</span></label>
+                                        <div class="controls ">
+                                            <input name="card_number" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="control-group">
+                                                <label class="control-label">{{ CVC }}<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <input name="cv_code" type="text" placeholder="CVC" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="control-group">
+                                                <label class="control-label">{{ expiration_date }}<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <input name="expiration_date" type="text" placeholder="MM/YY" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="control-group">
+                                        <label class="control-label">{{ name_on_card }}<span class="required">*</span></label>
+                                        <div class="controls ">
+                                            <input name="name_on_card" type="text" required>
+                                        </div>
+                                    </div>   
+                                    <br>
+                                    <hr>
+                                    <br>
+                                    <div class="control-group">
+                                        <label class="control-label">{{ email }}<span class="required">*</span></label>
+                                        <div class="controls ">
+                                            <input name="buyer_email" type="email" required>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <button id="add_comment" class="button button_grey" >{{ pay }}</button>      
+                                </form>                           
+                            </div>
+
+                            {% if not article.price or article.field_ar == request.session.field %}
+                                <div class="text_post_block">
+                                    <h3 class="section_title section_title_small"></h3>
+                                    <p>
+                                        {% if request.session.lang == 'ar' %}
+                                            {{ article.context_ar|safe }}
+                                        {% else %}
+                                            {{ article.context_en|safe }}
+                                        {% endif %}
+                                    </p>
+                                    
+                                    {% for media in multimedia %}
+                                        
+                                        {% if media.get_format_display == 'image' %}
+                                            <img src="{{ media.content.url }}" alt="" class="full_article_image" width="750" height="375">
+                                            <br/><br/>
+                                        {% elif media.get_format_display == 'audio' %}
+                                            <audio controls controlsList="nodownload" style="width:100%">
+                                                <source src="{{ media.content.url }}" type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <br/><br/>
+                                        {% else %}
+                                            <video width="100%" controls>
+                                                <source src="{{ media.content.url }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            <br/><br/>
+                                        {% endif %}
+                                            
+                                            
+                                    {% endfor %}
+                                        
+                                </div>
+
+                            {% endif %}
+                                
+                            <div class="section">
+                                <h2 class="section_title">{{ about_writer }}</h2>
+                
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-3 f_left">
+                                        <img src="{{ writer_information.picture.url }}" alt="" height="165" width="165">
+                                    </div>
+                                    <div class="col-lg-9 col-md-9 col-sm-9">
+                                        <table class="table_type_1">
+                                            <tbody>
+                                                <tr class="f_size_large">
+                                                    <th colspan="2">{{ writer_info }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{writer_information.writer_ID.first_name|add:' '|add:writer_information.writer_ID.last_name}}</td>
+                                                    <td>{{writer_information.writer_ID.email}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {% if request.session.lang == 'ar' %}
+                                                            {{writer_information.get_specialty_ar_display}}
+                                                        {% else %}
+                                                            {{writer_information.get_specialty_en_display}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{writer_information.writer_ID.country}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{writer_information.workplace}}</td>
+                                                    <td>{{writer_information.writer_ID.city}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            
+                            {% if not article.price or article.field_ar == request.session.field %}
+                                <div class="section">
+                                    <h2 class="section_title">{{ comments_header }}</h2>
+                                    <ul class="comments">
+                                    
+                                    {% if comments %}
+                                        {% for comment in comments %}
+                                            <li>
+                                                <div class="comment clearfix">
+                                                    <div>
+                                                        <div><img src="{{ comment.subscriber_ID.picture.url }}" alt="" width="80" height="80"></div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="clearfix">
+                                                            <a href="#"><h5 class="f_left">{{comment.subscriber_ID.subscriber_ID.first_name|add:' '|add:comment.subscriber_ID.subscriber_ID.last_name}}</h5></a>
+                                                            <div class="event_date f_right">{{ comment.comment_date }}</div>
+                                                        </div>
+                                                        <p>{{ comment.comment_content }}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}     
+                                    {% else %}
+                                        <h2 class="center">{{ no_comments }}</h2>
+                                    {% endif %}
+                                            
+                                    </ul>
+                                </div>
+                            {% endif %}
+                                                        
+                        </div>        
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                
+                        <div class="section side_bar_reviews appear-animation fadeInDown appear-animation-visible"
+                            data-appear-animation="fadeInDown" data-appear-animation-delay="1150" style="animation-delay: 1150ms;">
+                            <h2 class="section_title">{{ latest_articles_header }}</h2>
+                            <ul>
+                                
+                                {% for article in latest_articles %}
+                                    <li class="clearfix">
+                                        <div class="scale_image_container">
+                                            <a href="{% url 'show_article' article.article_ID %}"><img src=" {{ article.cover_image.url }} " alt="" width="165" height="110"></a>
+                                            <div class="post_image_buttons">
+                                                <a href="{% url 'show_article' article.article_ID %}" class="button banner_button travel" >
+                                                    {% if request.session.lang == 'ar' %}
+                                                        {{ article.get_field_ar_display }}
+                                                    {% else %}
+                                                        {{ article.get_field_en_display }}
+                                                    {% endif %}
+                                                </a>
+                                                <a href="{% url 'show_article' article.article_ID %}" class="icon_box">
+                                                    {% if package.article.type == 'VIDEO' %}
+                                                        <i class="fa fa-video-camera"></i>
+                                                    {% else %}
+                                                        {% if package.article.type == 'AUDIO' %}
+                                                            <i class="fa fa-headphones fa-lg"></i>
+                                                        {% else %}
+                                                            {% if package.article.type == 'IMAGE' %}
+                                                                <i class="fa fa-picture-o"></i>
+                                                            {% else %}
+                                                                <i class="fa fa-file-text"></i>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                            {% if article.price and request.session.role != 'subscriber'  %}
+                                                
+                                                {% if article.article.field_ar != request.session.field %}
+                                                    <div class="canvas bg_canvas_1">
+                                                    <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                                                    </div>
+                                                {% endif %}
+                      
+                                            {% endif %}
+                                        </div>
+                                        <div class="post_text">
+                                            <a href="{% url 'show_article' article.article_ID %}">
+                                                <h4>
+                                                    {% if request.session.lang == 'ar' %}
+                                                        {{ article.title_ar }}
+                                                    {% else %}
+                                                        {{ article.title_en }}
+                                                    {% endif %}
+                                                </h4>
+                                            </a>
+                                            <div class="event_date" style="color:black">{{ article.publishing_date|timezone:'Asia/Riyadh' }}</div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                    
+                                    
+                            </ul>
+                        </div>
+        
+                        <div class="section">
+                            <h2 class="section_title">{{ our_writers_header }}</h2>
+                            <ul class="writers_list clearfix">
+                                
+                                {% for writer in our_writers %}
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <img src="{{ writer.picture.url }} " alt="" width="100" height="100">
+                                            </div>
+                                            <div class="post_text">
+                                                <h4>{{ writer.writer_ID.first_name|add:' '|add:writer.writer_ID.last_name }}</h4>
+                                            </div>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                        
+                                    
+                            </ul>
+                        </div>
+        
+                        {% if not article.price %}
+                            <div class="section side_bar_banners clearfix">
+                                <h2 class="section_title">{{ related_articles_header }}</h2>
+                                
+                                
+                                {% for article in related_articles %}
+                                    <div class="scale_image_container">
+                                        <a href="{% url 'show_article' article.article_ID %}">
+                                            <img src=" {{ article.cover_image.url }} " alt="" width="555" height="340">
+                                        </a>
+                                        <div class="caption_type_1">
+                                            <div class="caption_inner">
+                                                <div class="clearfix">
+                                                    <a href="{% url 'show_article' article.article_ID %}" class="button banner_button travel">
+                                                        {% if request.session.lang == 'ar' %}
+                                                            {{ article.get_field_ar_display }}
+                                                        {% else %}
+                                                            {{ article.get_field_en_display }}
+                                                        {% endif %}</a>
+                                                    <div class="event_date">
+                                                        {{ article.publishing_date|timezone:'Asia/Riyadh' }}
+                                                    </div>
+                                                </div>
+                                                <a href="{% url 'show_article' article.article_ID %}">
+                                                    <h3>
+                                                        {% if request.session.lang == 'ar' %}
+                                                            {{ article.title_ar }}
+                                                        {% else %}
+                                                            {{ article.title_en }}
+                                                        {% endif %}
+                                                    </h3>
+                                                </a>
+                                            </div>
+                                            
+                                            {% if article.article.field_ar != request.session.field %}
+                                                <div class="canvas bg_canvas_1">
+                                                <i class="fa fa-lock lock_customization color_lock_customization_2"></i>
+                                                </div>
+                                            {% endif %}
+                        
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                    
+                                    
+                            </div>
+                        {% endif %}
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+      
+       
+    
+
+{% endblock body %}
+    
+
+
+{% block script %}
+    <script>
+            $("#buy-article").click(function(event){
+                $("#payment_window").css('display','block');
+                event.preventDefault()
+            })
+    </script>
+
+{% endblock script %}

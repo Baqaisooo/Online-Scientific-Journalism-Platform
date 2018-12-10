@@ -1,0 +1,245 @@
+{% extends 'scientificJournalism/base_component/revision.html' %}
+
+{% load static %}
+
+{% load tz %}
+
+{% block body %}
+
+        <!--==============================content================================-->
+        <div class="content">
+            <div class="container">
+                <div class="row flex_reversed">
+                    <div class="col-lg-2 col-md-1 col-sm-12">
+                    </div>
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="section">
+                            <!-- title -->
+                            <h2 class="section_title section_title_medium_var2">
+                                    {{ article.title_ar }}
+                            </h2>
+
+                            <!-- cover image and brief -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <a href="#"><img src="{{ article.cover_image.url }}" alt="Cover Image" class="scale_image" width="750" height="375"></a>
+                                </div>
+                                <p>
+                                    {{ article.brief_of_article_ar }}
+                                </p>
+                            </div>
+
+                            <br>
+                           
+                            <!-- context and multimedia -->
+                            <div class="text_post_block">
+                                <h3 class="section_title section_title_small"></h3>
+                                <p>
+                                    {{ article.context_ar|safe }}
+                                </p>
+                                
+                                {% for media in multimedia %}
+                                    
+                                    {% if media.get_format_display == 'image' %}
+                                        <img src="{{ media.content.url }}" alt="" class="full_article_image" width="750" height="375">
+                                        <br/><br/>
+                                    {% elif media.get_format_display == 'audio' %}
+                                        <audio controls controlsList="nodownload" style="width:100%">
+                                            <source src="{{ media.content.url }}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                        <br/><br/>
+                                    {% else %}
+                                        <video width="100%" controls>
+                                            <source src="{{ media.content.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <br/><br/>
+                                    {% endif %}
+                                        
+                                        
+                                {% endfor %}
+                                    
+                            </div>
+                            
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                            <!-- my final dicision -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <h2>قراري النهائي تجاه هذه المقالة</h2>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 center">
+                                            <button class="button button_type_4 reject" style="padding:25px 30px; width:100%; color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1;">رفض هذه المقالة</button>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 center">
+                                            <button class="button button_type_4 accept" style="padding:25px 30px; width:100%; color: #3c763d; background-color: #dff0d8; border: 1px solid #d6e9c6;">قبول هذه المقالة</button>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 center">
+                                            <button class="button button_type_4 redirect" style="padding:25px 30px; width:100%; color: #31708f; background-color: #d9edf7; border: 1px solid #bce8f1;">توجيه المقالة للمراجعة</button>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div id="rejection_div" style="display:none">
+                                        <form action="{% url 'reject_article' %}" method="POST">
+                                            {% csrf_token %}
+                                            <p style="color:red">في حال قررت رفض المقالة يرجى كتابة سبب مقنع لرفض المقالة الخاصة بالكاتب ثم الضغط على <b>رفض هذه المقالة</b></p>
+                                            <br>
+                                            <textarea rows="5" name="reason" style="width:100%; height: 25%; border: 3px solid #1f74ad; color:black" placeholder="سبب الرفض للمقالة" required></textarea>
+                                            <button type="submit" name="article_ID" value="{{ article.article_ID }}" class="button button_type_4" style="padding:10px; width:20%; color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1;">رفض هذه المقالة</button>
+                                        </form>
+                                    </div>
+                                    <div id="acception_div" style="display:none">
+                                        <div class="row">
+                                            <form method="POST" action="{% url 'accept_article_in_details' %}">
+                                                {% csrf_token %}
+                                                <hr style="border: 1px solid;">
+                                                <br>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                                    <h2 style="text-align: right">تُضاف إلى الافتتحاية</h2>
+                                                    <div class="control-group form-elements" style="display: flex;">
+                                                        <input type="radio" name="editorial" value="true" style="-webkit-appearance: radio; height: 20px; width: 15%" required>
+                                                        <h3 for="radio_1">نعم</h3>
+                                                        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                                                        <input type="radio" checked="checked" name="editorial" value="false" style="-webkit-appearance: radio; height: 20px; width: 15%" required>
+                                                        <h3 for="radio_2">لا</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                                    <h2 style="text-align: right">المقالة</h2>
+                                                    <div class="control-group form-elements" style="display: flex;">
+                                                        <input type="radio" checked="" name="priced" value="priced" style="-webkit-appearance: radio; height: 20px; width: 15%" required>
+                                                        <h3 for="radio_1">مدفوعة</h3>
+                                                        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                                                        <input type="radio" checked="checked" name="priced" value="free" style="-webkit-appearance: radio; height: 20px; width: 15%" required>
+                                                        <h3 for="radio_2">مجانية</h3>
+                                                    </div>
+                                                </div>
+                                                <br><br><br>
+                                                <button class="button button_type_4 accept" name="article_id" value="{{ article.article_ID }}" style="display: block; margin: auto; color: #3c763d; background-color: #dff0d8; border: 1px solid #d6e9c6;">قبول هذه المقالة</button>
+                                            </form>
+                                            
+                                        </div>
+
+                                            
+                                    </div>
+                                    <div id="redirect_div" style="display:none">
+                                        <div class="assigned_box">
+                                            <div style="background-color:#3e454c; color:white; display: grid">
+                                                <h2 style="text-align: center; padding: 5px; color: white">توجيه المقالة</h2>
+                                                <p style="text-align: center; padding: 5px">يرجى الضغط على زر توجيه الذي يوجد أمام الشخص المناسب</p>  
+                                                <input style=" padding: 5px; border:1px solid #1f74ad; width: 60%;margin: auto" class="form-control" id="myInput" type="text" placeholder=" بحث ..">
+                                                <br>
+                                            </div>
+                                            
+                                            <div>
+                                                <table class="table_type_1 var2">
+                                                    <thead>
+                                                        <tr class="f_size_large">
+                                                            <th style="width:55%">المحرر</th>
+                                                            <th style="width:25%">المجال</th>
+                                                            <th style="width:20%">اختيار</th>
+                                                        </tr>
+                                                    </thead>
+                                                        
+                                                    <tbody id="myTable">
+                                                        
+                                                        {% for AE in AE_list %}
+                                                            <tr id="11">
+                                                                <td id="22">
+                                                                    <h3 class="writer_name">{{ AE.AE_ID.EBM_ID.first_name|add:' '|add:AE.AE_ID.EBM_ID.last_name }}</h3>
+                                                                </td>
+                                                                <td>
+                                                                    <h3>{{ AE.AE_ID.get_specialty_ar_display }}</h3>
+                                                                </td>
+                                                                <td><input style="-webkit-appearance:radio;height: 20px;" class="choose_field" type="radio" name="writer_ID" value="{{ AE.AE_ID.EBM_ID.user_ID }}" required></td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                                
+                                                            
+                                                            
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                
+                                            <div style="padding:2px 20px; border-top: 2px solid black;">
+                                                <h3 style="float: right;"> توجيه المقالة للمحرر : </h3><h3  style="float: right;" id="show_writer_name"></h3>
+                                                <form style="float: left" method="POST" action="{% url 'assign_article' %}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" id='assind_article_ID' name='assind_article_ID' value="{{ article.article_ID }}">
+                                                    <button id="assign_article" name="assign_article" class="assign_btn btn btnxx" style="opacity: 0.5; float: left; width: 110px; height: 40px; font-size: x-large; color: #31708f; background-color: #d9edf7; border: 1px solid #bce8f1" type="submit" value="" disabled >توجيه</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                        </div>        
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+      
+       
+    
+
+{% endblock body %}
+    
+
+
+{% block script %}
+    <script>
+        $(".reject").click(function () {
+            $("#acception_div").css('display','none');
+            $("#redirect_div").css('display','none');
+            $("#rejection_div").css('display','block');
+        })
+    </script>
+
+    <script>
+        $(".accept").click(function () {
+            $("#rejection_div").css('display','none');
+            $("#redirect_div").css('display','none');
+            $("#acception_div").css('display','block');
+        })
+    </script>
+
+    <script>
+        $(".redirect").click(function () {
+            $("#acception_div").css('display','none');
+            $("#rejection_div").css('display','none');
+            $("#redirect_div").css('display','block');
+        })
+    </script>
+
+    <script>
+        $('.choose_field').click(function(){
+            var name = $(this).parent().parent().children().children().html()
+            $('#show_writer_name').html(name)
+            $('#assign_article').css({'opacity': 1})
+            $('#assign_article').prop('disabled', false);
+
+            var AE_id = $(this).attr('value')
+            $('#assign_article').attr('value',AE_id)
+        })
+    </script>
+
+    <script>
+        $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        });
+    </script>
+{% endblock script %}

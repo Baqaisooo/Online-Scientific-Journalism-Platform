@@ -1,0 +1,524 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <link rel="stylesheet" type="text/css" href=" {% static 'scientificJournalism/css/normalize.css' %} " />
+    <link rel="stylesheet" type="text/css" href=" {% static 'scientificJournalism/css/demo.css' %} " />
+    <link rel="stylesheet" type="text/css" href=" {% static 'scientificJournalism/css/component.css' %} " />
+
+    <!--stylesheet include-->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/style.css' %}">
+    <!-- RTL Styles -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'scientificJournalism/css/rtl.css' %}">
+
+    <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Title Page-->
+    <title>{{ page_title }}</title>
+
+    <!-- Icons font CSS-->
+    <link href=" {% static 'scientificJournalism/vendor/mdi-font/css/material-design-iconic-font.min.css' %} " rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href=" {% static 'scientificJournalism/vendor/select2/select2.min.css' %} " rel="stylesheet" media="all">
+
+    <!-- Subscribe CSS-->
+    <link href=" {% static 'scientificJournalism/css/subscribe.css' %} " rel="stylesheet" media="all">
+ 
+    <!-- Include external CSS. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+ 
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        /*.fr-toolbar.fr-top,.fr-wrapper {
+            top: 0;
+            width: 100% !important;
+        }*/
+
+        .textareaWidth{
+            width:100%;
+            height:50px;
+            display:table;
+        }
+
+        .black-font{
+            color: #000 !important;
+        }
+
+        .txtarea{
+            width:100%;
+            height:140px;
+            resize:none;
+            padding: 0 10px;
+            overflow: hidden;
+        }
+
+
+     
+        .outter-field-container{
+            width: 100%;
+        }
+
+        .inner-field-container{
+            display: grid;
+            margin: auto;
+        } 
+
+        .column {
+            display:flex;
+            min-height:80px;
+            border: 2px solid #666666;
+            background-color: #ccc;
+            margin: 7px auto;
+            -webkit-box-shadow: inset 0 0 3px #000;
+            -ms-box-shadow: inset 0 0 3px #000;
+            box-shadow: inset 0 0 3px #000;
+            text-align: center;
+        }
+
+        .column.over {
+            border: 2px dashed #000;
+        }
+
+        .head-outter {
+            color: #fff;
+            text-shadow: #000 0 1px;
+            box-shadow: 5px;
+            width:37px;
+            display:grid;
+            background: -moz-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+            background: -webkit-gradient(linear, left top, right top,
+                                        color-stop(0, rgb(0,0,0)),
+                                        color-stop(0.50, rgb(79,79,79)),
+                                        color-stop(1, rgb(21,21,21)));
+            background: -webkit-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+            background: -ms-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+        }
+
+        .field{
+            width:100%;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .addIcon{
+            width:50px;
+            height:50px;
+            margin: auto;
+            user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .add, .head-inner{
+            margin:auto 0
+        }
+
+        .body_article_title{
+            transform: rotate(90deg);
+            margin:auto;
+            color: #fff;
+        }
+
+        .media, .remove > div{
+            margin:auto
+        }
+
+        /*===================*/
+       
+
+        .remove {
+            background-color: #ffc800;
+            display: grid;
+            padding: 10px;
+            color: #000000;
+        }
+
+        {% if dir == 'rtl'  %}
+            .select2-selection__arrow{
+                left : 0 !important;
+                text-align: right
+            }
+        {% else %}
+            .select2-selection__arrow{
+                    right : 0 !important;
+                    text-align: left
+                }
+        {% endif %}
+
+    </style>
+
+  </head>
+ 
+  <body style="direction: {{ dir }}">
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper" style="max-width: 817px;">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">{{ title }}</h2>
+                    <form action=" {% url 'submit_article' %} " method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ article_field }}</label><span style="color:red">*</span>
+                                    <div class="rs-select2 select2-selection__arrow js-select-simple input_icon_{{dir}} select--no-search">
+                                        <select name="article_field" Required>
+                                            <option disabled="disabled" selected="selected"></option>
+                                            <option value="HEALTH">{{ health }}</option>
+                                            <option value="IT">{{ IT }}</option>
+                                            <option value="ECOLOGY">{{ ecology }}</option>
+                                            <option value="ORGANISMS">{{ organisms }}</option>
+                                            <option value="NATURE">{{ nature }}</option>
+                                            <option value="CHEMICAL">{{ chemicals }}</option>
+                                            <option value="MATH">{{ math }}</option>
+                                            <option value="ENGINEERING">{{ engineering }}</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ cover_image }}</label><span style="color:red">*</span>
+                                    <input type="file" name="cover_image" id="file-1" class="inputfile inputfile-1" style="display:none" accept="image/jpeg, image/png, image/gif" onchange="uploaded_image(event, this)" Required/>
+                                    <label for="file-1" class="textareaWidth"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>{{ image_field }}&hellip;</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ article_title }}</label><span style="color:red">*</span>
+                                    <input class="input--style-4 black-font" style="height: 50px; border: 1px solid #3498db" type="text" name="article_title" maxlength="50" Required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">{{ article_lang }}</label><span style="color:red">*</span>
+                                    <div class="rs-select2 select2-selection__arrow js-select-simple input_icon_{{dir}} select--no-search">
+                                        <select name="article_lang" Required>
+                                            <option disabled="disabled" selected="selected"></option>
+                                            <option value="ar">{{ arabic }}</option>
+                                            <option value="en">{{ english }}</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-1 textareaWidth">
+                                <div class="input-group">
+                                    <label class="label">{{ brief_of_article }}</label><span style="color:red">*</span>
+                                    <textarea class="txtarea textareaWidth black-font" style="border: 1px solid #3498db" name="brief_of_article" id="brief_of_article" maxlength="500" minlength="250" Required></textarea>
+                                    <div id="message">
+                                        <span style="color:red">*</span><span style="color:red"> {{ limitation }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-1 textareaWidth">
+                                <div class="input-group" style="display: table-caption">
+                                    
+                                    <div class="alert alert-info" style="padding:20px !important">
+                                        <b><label class="label">{{ article_body }}</label></b>
+                                        {% for tip in article_body_tip %}
+                                            <h5>{{tip|safe }}</h5>
+                                        {% endfor %}
+                                    </div>
+                                    <div id="columns">
+                
+                                        <div class="column" draggable="false">         
+                                            
+                                            <div class="head-outter">
+                                                <div class="head-inner">
+                                                    <h4 class="body_article_title">{{ text }}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="outter-field-container">
+                                                <textarea class="field froala" name="context" id="field_1" value="" Required></textarea>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div  id="AddMoreFileId" class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="section_5" style="text-align:center">
+                                                <a href="#" id="AddMoreImageBox" class="button button_type_4 button_grey">{{ add_image }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="section_5" style="text-align:center">
+                                                <a href="#" id="AddMoreAudioBox" class="button button_type_4 button_grey_light">{{ add_audio }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="section_5" style="text-align:center">
+                                                <a href="#" id="AddMoreVideoBox" class="button button_type_4 button_grey">{{ add_video }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit">{{ register }}</button>
+                        </div>
+                    </form>
+                    <br/>
+                    <h4 style="text-align:center "><a href=" {% url 'writer_homepage' %} " >{{ back }}</a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- Jquery JS-->
+    <script src=" {% static 'scientificJournalism/vendor/jquery/jquery.min.js' %} "></script>
+    <!-- Vendor JS-->
+    <script src=" {% static 'scientificJournalism/vendor/select2/select2.min.js' %} "></script>
+    <script src=" {% static 'scientificJournalism/vendor/datepicker/moment.min.js' %} "></script>
+
+    <!-- Main JS-->
+    <script src=" {% static 'scientificJournalism/js/subscribe.js' %} "></script>
+    <script src=" {% static 'scientificJournalism/js/custom-file-input.js' %} "></script>
+
+
+    <!-- Include external JS libs. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+ 
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/js/froala_editor.pkgd.min.js"></script>
+ 
+    <!-- Initialize the editor. -->
+    <script> 
+        $(function() { 
+            $('.froala').froalaEditor({
+                    toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'align', '|', 'insertTable', '|', 'specialCharacters', 'insertHR', 'selectAll', '|', 'undo', 'redo'],
+                    quickInsertTags: null
+            }) 
+        });
+    </script>
+
+    
+    
+    <script>
+
+        $(document).ready(function() {
+
+            var MaxInputs       = 6; //maximum extra input boxes allowed
+            var InputsWrapper   = $("#columns"); //Input boxes wrapper ID
+            var AddImageButton  = $("#AddMoreImageBox"); //Add image button ID
+            var AddVideoButton  = $("#AddMoreVideoBox"); //Add video button ID
+            var AddAudioButton  = $("#AddMoreAudioBox"); //Add audio button ID
+
+            //var x = 1 //initlal text box count
+
+            var imageFieldCount = 0
+            var videoFieldCount = 0
+            var audioFieldCount = 0
+
+            var TotalFieldCount=1; //to keep track of text box added
+
+
+            //on add image input button click
+            $(AddImageButton).click(function (e) {
+                //max input box allowed
+                if(TotalFieldCount <= MaxInputs) {
+                    //textFieldCount++; //text box added ncrement
+                    //add input box
+                    $(InputsWrapper).append('<div class="column" draggable="false"><div class="head-outter"><div class="head-inner"><h4 class="body_article_title">{{ image }}</h4></div></div><div class="outter-field-container"><div class="inner-field-container"><input type="file" class="media image" name="media" id="field_'+TotalFieldCount+'" accept="image/jpeg, image/png, image/gif" onchange="uploaded_image(event, this)" Required/></div></div><div class="remove"><div><i class="removeclassimage fas fa-trash-alt"></i></div></div></div>');
+
+                    TotalFieldCount++;
+                    imageFieldCount++;
+                    //x++; //text box increment 
+                    
+                    $("#AddMoreFileId").show();
+                    
+                    $('AddImageButton').html("Add field");
+                    
+                    // Delete the "adds"-link if there number of fields reatch to max.
+                    if(TotalFieldCount == MaxInputs) {
+                        $("#AddMoreFileId").hide();
+                        $("#lineBreak").html("<br>");
+                    }
+                }
+                return false;
+            });
+
+
+            //on add video input button click
+            $(AddVideoButton).click(function (e) {
+                //max input box allowed
+                if(TotalFieldCount <= MaxInputs && videoFieldCount<2) {
+                    //textFieldCount++; //text box added ncrement
+                    //add input box
+                    $(InputsWrapper).append('<div class="column" draggable="false"><div class="head-outter"><div class="head-inner"><h4 class="body_article_title">{{ video }}</h4></div></div><div class="outter-field-container"><div class="inner-field-container"><input type="file" class="media video" name="media" id="field_'+TotalFieldCount+'" accept="video/mp4" onchange="uploaded_video(event, this)" Required/></div></div><div class="remove"><div><i class="removeclassvideo fas fa-trash-alt"></i></div></div></div>');
+
+                    TotalFieldCount++;
+                    videoFieldCount++;
+                    //x++; //text box increment 
+                    
+                    $("#AddMoreFileId").show();
+                    
+                    $('AddVideoButton').html("Add field");
+                    
+                    // Delete the "adds"-link if there number of fields reatch to max.
+                    if(TotalFieldCount == MaxInputs) {
+                        $("#AddMoreFileId").hide();
+                        $("#lineBreak").html("<br>");
+                    }
+                }
+                return false;
+            });
+
+            //on add audio input button click
+            $(AddAudioButton).click(function (e) {
+                //max input box allowed
+                if(TotalFieldCount <= MaxInputs && audioFieldCount<2) {
+                    //textFieldCount++; //text box added ncrement
+                    //add input box
+                    $(InputsWrapper).append('<div class="column" draggable="false"><div class="head-outter"><div class="head-inner"><h4 class="body_article_title">{{ audio }}</h4></div></div><div class="outter-field-container"><div class="inner-field-container"><input type="file" class="media audio" name="media" id="field_'+TotalFieldCount+'" accept="audio/mp3" onchange="uploaded_audio(event, this)" Required/></div></div><div class="remove"><div><i class="removeclassaudio fas fa-trash-alt"></i></div></div></div>');
+
+                    TotalFieldCount++;
+                    audioFieldCount++;
+                    //x++; //text box increment 
+                    
+                    $("#AddMoreFileId").show();
+                    
+                    $('AddAudioButton').html("Add field");
+                    
+                    // Delete the "adds"-link if there number of fields reatch to max.
+                    if(TotalFieldCount == MaxInputs) {
+                        $("#AddMoreFileId").hide();
+                        $("#lineBreak").html("<br>");
+                    }
+                }
+                return false;
+            });
+
+
+
+
+
+            $("body").on("click",".removeclassimage", function(e){ //user click on remove text
+                if( TotalFieldCount >= 1 ) {
+                    $(this).parent('div').parent('div').parent('div').remove(); //remove text box
+                    TotalFieldCount--; //decrement textbox
+                    imageFieldCount--;
+                
+                    $("#AddMoreFileId").show();
+                
+                    $("#lineBreak").html("");
+                
+                    // Adds the "add" link again when a field is removed.
+                    $('AddMoreFileBox').html("Add field");
+                }
+                return false;
+            }) 
+
+            $("body").on("click",".removeclassvideo", function(e){ //user click on remove text
+                if( TotalFieldCount >= 1 ) {
+                    $(this).parent('div').parent('div').parent('div').remove(); //remove text box
+                    TotalFieldCount--; //decrement textbox
+                    videoFieldCount--;
+                
+                    $("#AddMoreFileId").show();
+                
+                    $("#lineBreak").html("");
+                
+                    // Adds the "add" link again when a field is removed.
+                    $('AddMoreFileBox').html("Add field");
+                }
+                return false;
+            }) 
+
+            $("body").on("click",".removeclassaudio", function(e){ //user click on remove text
+                if( TotalFieldCount >= 1 ) {
+                    $(this).parent('div').parent('div').parent('div').remove(); //remove text box
+                    TotalFieldCount--; //decrement textbox
+                    audioFieldCount--;
+                
+                    $("#AddMoreFileId").show();
+                
+                    $("#lineBreak").html("");
+                
+                    // Adds the "add" link again when a field is removed.
+                    $('AddMoreFileBox').html("Add field");
+                }
+                return false;
+            }) 
+
+        });
+
+    </script>
+
+
+    <script>
+        $('#brief_of_article').on('keyup', function () {
+            if ($('#brief_of_article').val().length >= 250 && $('#brief_of_article').val().length <= 500){
+                $('#message').css('display', 'none');
+            }
+            else {
+                $('#message').css('display', 'block');
+            }
+            });
+    </script>
+
+    <script>
+        function uploaded_audio(event, file){
+            if(file.files[0].size > 10485760){
+                file.value="";
+                alert('Uploaded audio file should not be excced 10 MB')
+            }
+        }
+    </script>
+
+    <script>
+        function uploaded_image(event, file){
+            if(file.files[0].size > 1048576){
+                file.value="";
+                alert('Uploaded image file should not be excced 1 MB')
+            }
+        } 
+    </script>
+
+    <script>
+        function uploaded_video(event, file){
+            if(file.files[0].size > 36700160){
+                file.value="";
+                alert('Uploaded video file should not be excced 35 MB')
+            }
+        } 
+    </script>
+  </body>
+</html>

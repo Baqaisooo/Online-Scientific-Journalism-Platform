@@ -1,0 +1,194 @@
+{% extends 'scientificJournalism/base_component/revision.html' %}
+
+{% load static %}
+
+{% load tz %}
+
+
+{% block extraheader %}
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+{% endblock extraheader %}
+    
+
+
+
+{% block body %}
+
+        <!--==============================content================================-->
+        <div class="content">
+            <div class="container">
+                <div class="row flex_reversed">
+                    <div class="col-lg-2 col-md-1 col-sm-12">
+                    </div>
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="section">
+                            <!-- title -->
+                            <h2 class="section_title section_title_medium_var2">
+                                    {{ article.title_ar }}
+                            </h2>
+
+                            <!-- cover image and brief -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <a href="#"><img src="{{ article.cover_image.url }}" alt="Cover Image" class="scale_image" width="750" height="375"></a>
+                                </div>
+                                <p>
+                                    {{ article.brief_of_article_ar }}
+                                </p>
+                            </div>
+
+                            <br>
+                           
+                            <!-- context and multimedia -->
+                            <div class="text_post_block">
+                                <h3 class="section_title section_title_small"></h3>
+                                <p>
+                                    {{ article.context_ar|safe }}
+                                </p>
+                                
+                                {% for media in multimedia %}
+                                    
+                                    {% if media.get_format_display == 'image' %}
+                                        <img src="{{ media.content.url }}" alt="" class="full_article_image" width="750" height="375">
+                                        <br/><br/>
+                                    {% elif media.get_format_display == 'audio' %}
+                                        <audio controls controlsList="nodownload" style="width:100%">
+                                            <source src="{{ media.content.url }}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                        <br/><br/>
+                                    {% else %}
+                                        <video width="100%" controls>
+                                            <source src="{{ media.content.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <br/><br/>
+                                    {% endif %}
+                                        
+                                        
+                                {% endfor %}
+                                    
+                            </div>
+                            
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                            <!-- my final dicision -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <h2>قراري تجاه هذه المقالة</h2>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                            <a href="{% url 'reviewer_apologize' article.article_ID %}" class="button button_type_4 reject" style="padding:25px 30px; width:100%; color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1;">الإعتذار عن هذه المقالة</a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                            <button class="button button_type_4 accept" style="padding:25px 30px; width:100%; color: #3c763d; background-color: #dff0d8; border: 1px solid #d6e9c6;">مراجعة هذه المقالة</button>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    
+                                    <div id="acception_div" style="display:none">
+                                        <div class="row">
+                                            <form method="POST" action="{% url 'comment_article_as_reviewer' %}">
+                                                {% csrf_token %}
+                                                <hr style="border: 1px solid;">
+                                                <br>
+                                                <textarea class="field froala" name="comment" id="field_1" value="" Required></textarea>
+                                                <br>
+                                                <button class="button button_type_4 accept" type="submit" name="article_id" value="{{ article.article_ID }}" style="display: block; margin: auto; color: #3c763d; background-color: #dff0d8; border: 1px solid #d6e9c6;">إرساله الملاحطات</button>
+
+                                                <br><br><br>
+                                                
+                                            </form>
+                                            
+                                        </div>
+
+                                            
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <br><br>
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                        </div>        
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+      
+       
+    
+
+{% endblock body %}
+    
+
+
+{% block script %}
+
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/js/froala_editor.pkgd.min.js"></script>
+ 
+    <!-- Initialize the editor. -->
+    <script> 
+        $(function() { 
+            $('.froala').froalaEditor({
+                    toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'insertTable', '|', 'specialCharacters', 'insertHR','align'],
+                    quickInsertTags: null
+            }) 
+        });
+    </script>
+
+    <script>
+        $(".reject").click(function () {
+            $("#acception_div").css('display','none');
+            $("#redirect_div").css('display','none');
+            $("#rejection_div").css('display','block');
+        })
+    </script>
+
+    <script>
+        $(".accept").click(function () {
+            $("#rejection_div").css('display','none');
+            $("#redirect_div").css('display','none');
+            $("#acception_div").css('display','block');
+        })
+    </script>
+
+    <script>
+        $(".redirect").click(function () {
+            $("#acception_div").css('display','none');
+            $("#rejection_div").css('display','none');
+            $("#redirect_div").css('display','block');
+        })
+    </script>
+
+    <script>
+        $('.choose_field').click(function(){
+            var name = $(this).parent().parent().children().children().html()
+            $('#show_writer_name').html(name)
+            $('#assign_article').css({'opacity': 1})
+            $('#assign_article').prop('disabled', false);
+
+            var AE_id = $(this).attr('value')
+            $('#assign_article').attr('value',AE_id)
+        })
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+{% endblock script %}

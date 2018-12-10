@@ -1,0 +1,174 @@
+{% extends 'scientificJournalism/base_component/revision.html' %}
+
+{% load static %}
+
+{% load tz %}
+
+
+{% block extraheader %}
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+{% endblock extraheader %}
+    
+
+{% block body %}
+
+        <!--==============================content================================-->
+        <div class="content">
+            <div class="container">
+                <div class="row flex_reversed">
+                    <div class="col-lg-2 col-md-1 col-sm-12">
+                    </div>
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="section">
+                            <!-- title -->
+                            <h2 class="section_title section_title_medium_var2">
+                                {{ article.article_ID.title_ar }}
+                            </h2>
+
+                            <!-- cover image and brief -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <a href="#"><img src="{{ article.article_ID.cover_image.url }}" alt="Cover Image" class="scale_image" width="750" height="375"></a>
+                                </div>
+                                <p>
+                                    {{ article.article_ID.brief_of_article_ar }}
+                                </p>
+                            </div>
+
+                            <br>
+                           
+                            <!-- context and multimedia -->
+                            <div class="text_post_block">
+                                <h3 class="section_title section_title_small"></h3>
+                                <p>
+                                    {{ article.article_ID.context_ar|safe }}
+                                </p>
+                                
+                                {% for media in multimedia %}
+                                    
+                                    {% if media.get_format_display == 'image' %}
+                                        <img src="{{ media.content.url }}" alt="" class="full_article_image" width="750" height="375">
+                                        <br/><br/>
+                                    {% elif media.get_format_display == 'audio' %}
+                                        <audio controls controlsList="nodownload" style="width:100%">
+                                            <source src="{{ media.content.url }}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                        <br/><br/>
+                                    {% else %}
+                                        <video width="100%" controls>
+                                            <source src="{{ media.content.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <br/><br/>
+                                    {% endif %}
+                                        
+                                        
+                                {% endfor %}
+                                    
+                            </div>
+                            
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                            <!-- Reviewer comment -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <h2>تعليق المراجع</h2>
+                                </div>
+                                <p>
+                                    {{ article.R_comment|safe }}
+                                </p>
+                            </div>
+
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                            <!-- my final dicision -->
+                            <div class="text_post_block">
+                                <div class="scale_image_container">
+                                    <h2>تعليقي تجاه هذه المقالة</h2>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                            <a href="{% url 'AE_apologize' article.article_ID.article_ID %}" class="button button_type_4 reject" style="padding:25px 30px; width:100%; color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1;">الإعتذار عن المقالة</a>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                            <button class="button button_type_4 accept" style="padding:25px 30px; width:100%; color: #3c763d; background-color: #dff0d8; border: 1px solid #d6e9c6;">التعليق على هذه المقالة</button>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div id="acception_div" style="display:none">
+                                        <form action="{% url 'comment_article_as_AE' %}" method="POST">
+                                            {% csrf_token %}
+                                            <textarea rows="5" class="field froala" name="comment" id="field_1" style="width:100%; height: 25%; border: 3px solid #1f74ad; color:black" placeholder="سبب الرفض للمقالة" required></textarea>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                                    <button class="button button_type_4 accept" type="submit" name="article_id" value="{{ article.article_ID.article_ID }}" style="display: block; margin: auto; color: #3c763d; background-color: #dff0d8; border: 1px solid #d6e9c6;">إرساله الملاحطات</button>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 center">
+                                                    <h2 style="text-align: right; margin-bottom: 6px">أنا أوصية بأن هذه المقالة يتم</h2>
+                                                    <div class="control-group form-elements" style="display: flex;">
+                                                        <input type="radio" name="recommendation" value="ACCEPT" style="-webkit-appearance: radio; height: 20px; width: 15%" required>
+                                                        <h3 for="radio_1">قبولها</h3>
+                                                        &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                                                        <input type="radio" name="recommendation" value="REJECT" style="-webkit-appearance: radio; height: 20px; width: 15%" required>
+                                                        <h3 for="radio_2">رفضها</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <hr style="border: 2px solid; margin: 15px 0;">
+
+                        </div>        
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-12">
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+      
+       
+    
+
+{% endblock body %}
+    
+
+
+{% block script %}
+
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/js/froala_editor.pkgd.min.js"></script>
+    
+    <!-- Initialize the editor. -->
+    <script> 
+        $(function() { 
+            $('.froala').froalaEditor({
+                    toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|', 'insertTable', '|', 'specialCharacters', 'insertHR','align'],
+                    quickInsertTags: null
+            }) 
+        });
+    </script>
+
+    <script>
+        $(".reject").click(function () {
+            $("#acception_div").css('display','none');
+            $("#rejection_div").css('display','block');
+        })
+    </script>
+    <script>
+        $(".accept").click(function () {
+            $("#rejection_div").css('display','none');
+            $("#acception_div").css('display','block');
+        })
+    </script>
+{% endblock script %}
