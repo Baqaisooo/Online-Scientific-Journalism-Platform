@@ -9,14 +9,14 @@ this is about an online scientific journalism platform that allow writer to writ
 
 # to use this web app, you have to follow these steps:
 
-### at the beginning we recommend you to make virtual environment for this project
+### at the beginning we recommend you to make a virtual environment for this project
 `virtualenv <environment_name> --no-site-packages`
 
 **environment_name **=> name it what ever you want
 
 ### activate the environment
 
-### back to the <environment_name> file. Now get this project py downloading or cloning it but the unzipped folder that directly contain project folders and files here
+### back to the <environment_name> file. Now get this project by downloading or cloning it but the unzipped folder that directly contains project folders and files here
 
 ### Now run this to get all dependencies
 `pip install -r requirements.txt`
@@ -26,7 +26,7 @@ this is about an online scientific journalism platform that allow writer to writ
 then
 `python manage.py migrate`
 
-now create super user to get to admin site
+now create a superuser to get to admin site
 `python manage.py createsuperuser`
 
 ### finally run server
