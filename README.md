@@ -1,5 +1,7 @@
 Welcome to the Online-Scientific-Journalism-Platform wiki!
 
+to keep on update : https://github.com/Baqaisooo/Online-Scientific-Journalism-Platform
+
 # Online-Scientific-Journalism-Platform
 this is about an online scientific journalism platform that allow writer to write an article and send it to Editorial Board to do there revision then deciding to publish or reject it, and it is fully supported for Arabic and English language
 
