@@ -49,6 +49,6 @@ stripe==2.11.0
 suds-jurko==0.6
 tika==1.19
 tqdm==4.28.1
-urllib3==1.23
+urllib3==1.26.5
 vine==1.1.4
 xmltodict==0.11.0
