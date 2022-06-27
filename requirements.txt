@@ -39,7 +39,7 @@ python-dateutil==2.7.5
 python-docx==0.8.7
 pytz==2018.5
 redis==3.0.1
-reportlab==3.5.10
+reportlab==3.5.55
 requests==2.19.1
 scipy==1.1.0
 six==1.11.0
